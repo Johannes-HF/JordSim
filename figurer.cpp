@@ -39,7 +39,9 @@ Figur::Figur(std::string filnavn, Punkt inSentrum){
 
     while(std::getline(fil, linje)){
         std::istringstream iss(linje);
-        char identifier;
+        
+        char identifier = '\0';
+
         iss >> identifier; 
 
         if (identifier == 'v'){
@@ -54,6 +56,7 @@ Figur::Figur(std::string filnavn, Punkt inSentrum){
             indexer.push_back(x-1);
             indexer.push_back(y-1);
             indexer.push_back(z-1);
+
         }
         else if (identifier == 'c'){
             int r, g, b;
@@ -63,10 +66,10 @@ Figur::Figur(std::string filnavn, Punkt inSentrum){
     }
 }
 
-std::vector<Punkt> Figur::getPunkter() const { return punkter;};
-std::vector<int> Figur::getIndexer() const { return indexer;};
-std::vector<TDT4102::Color> Figur::getFarger() const { return farger;};
-Punkt Figur::getSentrum() const {return sentrum;};
+const std::vector<Punkt>& Figur::getPunkter() const { return punkter;};
+const std::vector<int>& Figur::getIndexer() const { return indexer;};
+const std::vector<TDT4102::Color>& Figur::getFarger() const { return farger;};
+const Punkt& Figur::getSentrum() const {return sentrum;};
 
 void Figur::endreSentrum(Punkt& nyttSentrum){
     sentrum = nyttSentrum;

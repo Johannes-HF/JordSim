@@ -14,10 +14,10 @@ class Kamera{
     public:
         Kamera(const double kamFov, const double kamAspectRatio[2], Punkt kamPos);
 
-        Punkt getPos() const;
+        const Punkt& getPos() const;
         void endrePos(Punkt& p);
-        array<double, 2> getFov() const;
-        array<double, 2> getAspect() const;
+        const array<double, 2>& getFov() const;
+        const array<double, 2>& getAspect() const;
 
         friend std::ostream& operator<<(std::ostream& os, const Kamera& cam);
     

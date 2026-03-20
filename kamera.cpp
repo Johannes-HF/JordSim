@@ -26,20 +26,20 @@ Kamera::Kamera(const double kamFov, const double kamAspectRatio[2], Punkt kamPos
         fov[1] = alfa;
 }
 
-Punkt Kamera::getPos() const {return pos;}
+const Punkt& Kamera::getPos() const {return pos;}
 void Kamera::endrePos(Punkt& p){
     pos = p;
 }
 
-array<double, 2> Kamera::getFov() const {return fov;}
-array<double, 2> Kamera::getAspect() const {return aspectRatio;};
+const array<double, 2>& Kamera::getFov() const {return fov;}
+const array<double, 2>& Kamera::getAspect() const {return aspectRatio;};
 
 
 std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
     std::vector<float> toDplan;
 
-    std::array<double, 2> aspArr = getAspect();
+    const std::array<double, 2> aspArr = getAspect();
 
     double aRatio = aspArr[0] / aspArr[1];
 
@@ -57,14 +57,18 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             const Punkt& B =  fig->getPunkter().at(fig->getIndexer().at(j+1));
             const Punkt& C =  fig->getPunkter().at(fig->getIndexer().at(j+2));
 
-            Punkt absA = A + fig->getSentrum();
-            Punkt absB = B + fig->getSentrum();
-            Punkt absC = C + fig->getSentrum();
+            const Punkt absA = A + fig->getSentrum();
+            const Punkt absB = B + fig->getSentrum();
+            const Punkt absC = C + fig->getSentrum();
 
-            //Sjekker om trekanten er for nærme eller langt unna
-            if (absA.y >= FAR || absB.y >= FAR ||absC.y >= FAR || absA.y <= NEAR ||absB.y <= NEAR ||absC.y <= NEAR){
+            double dA = absA.y - this->pos.y;
+            double dB = absB.y - this->pos.y;
+            double dC = absC.y - this->pos.y;
+
+            if (dA <= NEAR || dB <= NEAR || dC <= NEAR ||
+                dA >= FAR  || dB >= FAR  || dC >= FAR) {
                 continue;
-            }
+}
 
             //Sjekker om trekanten vender vekk fra kamera
 
@@ -78,14 +82,11 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             };
 
             Punkt viewDir = absA - this->pos; // Vector from camera to absolute vertex
+            
             if (NormalVektor.x * viewDir.x + NormalVektor.y * viewDir.y + NormalVektor.z * viewDir.z >= 0){
                 continue;
             }
-/*
-            if (NormalVektor.x * A.x + NormalVektor.y * A.y + NormalVektor.z * A.z <= 0){
-                continue;
-            }
-        */
+
             //Sjekker om z koordinaten er over der man ser
             double hyp = std::tan(fov[0]);            
      
@@ -93,22 +94,14 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             
             //Sjekker om x koordinaten er lenger til siden enn der man ser
 
-            std::vector<Punkt*> hjorner{&absA, &absB, &absC};
+            std::vector<const Punkt*> hjorner{&absA, &absB, &absC};
 
             for (int k = 0; k < 3; k++){
 
-                Punkt* p = hjorner.at(k);
+                const Punkt* p = hjorner.at(k);
 
                 float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
                 float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
-           
-                std::cout << "xp: " << xp << "\nzp: " << zp << "\n";
-                
-                // if (k == 0){
-                //     if (xp < 0 || xp > WINDOW_WIDTH || zp < 0 || zp > WINDOW_HEIGHT){
-                //         break;
-                //     }
-                // }
 
                 toDplan.push_back(xp);
                 toDplan.push_back(zp);   
@@ -126,6 +119,20 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
     std::cout << "Figur trekant:\n" ;
 
     std::vector<float> toDplan = cam.projiser(figurer);
+    
+    std::cout << "Antall trekanter pr fig:\n" << toDplan.size() / 2.0 / 3.0 / figurer.size() << std::endl;
+
+    for (int j = 1; j < 3; j++){
+    for (int i = 0; i < toDplan.size() / 2; i+=6){
+        std::cout << i / 6 + 1 << ".  ";
+        for (int k = 0; k < 6; k+=2){
+            cout << toDplan.at(i*j+k) << ", " << toDplan.at(j*i+k+1) << ",    ";
+        }
+        std::cout << endl;
+            
+        };
+    }
+    std::cout << std::endl;
 
     std::vector<TDT4102::Color> farger {TDT4102::Color::green, TDT4102::Color::hot_pink, TDT4102::Color::royal_blue, TDT4102::Color::dark_orange};
     int fargeI = 0;
@@ -139,7 +146,7 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
 
             TDT4102::Point p {toDplan.at(i+j), toDplan.at(i+j+1)};
             punkter.push_back(p);
-            std::cout << toDplan.at(i+j) << ", " <<  toDplan.at(i+j+1) << std::endl;
+           // std::cout << toDplan.at(i+j) << ", " <<  toDplan.at(i+j+1) << std::endl; // x og y koord
         }
 
         window->draw_triangle(
@@ -148,13 +155,8 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
             punkter.at(2), 
             figurer[0]->getFarger().at(fargeI/2)
         );
-        std::cout << "Tegnet trekant" << std::endl;
         
         fargeI ++;
-
-        std::cout << "\n";
     }
-
-    std::cout << "\n\n\n"; 
 
 };

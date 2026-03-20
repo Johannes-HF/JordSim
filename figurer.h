@@ -40,11 +40,11 @@ class Figur
 
     
 
-    std::vector<Punkt> getPunkter() const ;
-    std::vector<int> getIndexer() const ;
-    std::vector<Punkt> getRetning() const ;
-    std::vector<TDT4102::Color> getFarger() const ;
-    Punkt getSentrum() const ;
+    const std::vector<Punkt>& getPunkter() const ;
+    const std::vector<int>& getIndexer() const ;
+    const std::vector<Punkt>& getRetning() const ;
+    const std::vector<TDT4102::Color>& getFarger() const ;
+    const Punkt& getSentrum() const ;
 
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();

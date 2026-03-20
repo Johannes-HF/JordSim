@@ -17,10 +17,10 @@ int main(){
 
     std::cout << cam;
 
-    Figur kube("./figurer/kube.obj", Punkt{WINDOW_WIDTH / 2, 10000, WINDOW_HEIGHT / 2});
+    Figur kube("./figurer/kube.obj", Punkt{WINDOW_WIDTH / 2, 5000, WINDOW_HEIGHT / 2});
     Figur kube2("./figurer/kube.obj", Punkt{800, 100, 400});
 
-    std::vector<Figur*> alleFigurer = {&kube, &kube2};
+    std::vector<Figur*> alleFigurer = {&kube, &kube2}; //&kube2
     
     while(!window.should_close()) {
 
