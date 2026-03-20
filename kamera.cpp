@@ -100,8 +100,8 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
                 const Punkt* p = hjorner.at(k);
 
-                float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
-                float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
+                float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
+                float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
 
                 toDplan.push_back(xp);
                 toDplan.push_back(zp);   
