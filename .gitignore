@@ -1,0 +1,20 @@
+# Build output
+build/
+
+# Meson downloaded dependencies
+subprojects/sdl2_windows/
+subprojects/sdl2_image_windows/
+subprojects/sdl2_mixer_windows/
+subprojects/packagecache/
+
+# VS Code (local editor config)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/c_cpp_properties.json
+.vscode/keybindings.json
+.vscode/extensions.json
+.vscode/prettierrc.json
+# OS
+.DS_Store
+Thumbs.db
