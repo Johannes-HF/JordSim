@@ -1,4 +1,4 @@
-##Jord-simulator
+## Jord-simulator
 
 Dette er mitt prosjekt i emne TDT4102 ved NTNU
 
