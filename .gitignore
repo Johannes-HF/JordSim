@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Build output
 build/
 
@@ -18,3 +19,6 @@ subprojects/packagecache/
 # OS
 .DS_Store
 Thumbs.db
+=======
+privaeNotes.txt
+>>>>>>> b9874c47fc26bdd9da2d5da99f83c5f5a1ea8d5c
