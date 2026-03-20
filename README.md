@@ -1,3 +1,5 @@
+##Jord-simulator
+
 Dette er mitt prosjekt i emne TDT4102 ved NTNU
 
 Målet mitt er å simulere jorda, med værsystemer, båter og fly
