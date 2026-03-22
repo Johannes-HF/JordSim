@@ -3,6 +3,7 @@
 #include "figurer.h"
 #include "konstanter.h"
 #include <fstream>
+#include <cmath>
 
 
 std::ostream& operator<<(std::ostream& os, const Punkt& p){
@@ -25,10 +26,24 @@ Punkt operator-(const Punkt& LHS, const Punkt& RHS){
     return sub;
 }
 
-int operator*(const Punkt& LHS, const Punkt& RHS){
+float operator*(const Punkt& LHS, const Punkt& RHS){
   
     return LHS.x * RHS.x + LHS.y * RHS.y + LHS.z * RHS.z;
-   
+}
+
+Punkt operator*(const Punkt& LHS, const float t){
+    return Punkt {LHS.x * t, LHS.y * t, LHS.z * t};
+}
+
+Punkt operator^(const Punkt& LHS, const Punkt& RHS){
+    Punkt p;
+
+    p.x = LHS.y * RHS.z - LHS.z * RHS.y; 
+    p.y = LHS.z * RHS.x - LHS.x * RHS.z;
+    p.z = LHS.x * RHS.y - LHS.y * RHS.x;
+    
+    return p;
+
 }
 
 Figur::Figur(std::string filnavn, Punkt inSentrum){
@@ -74,6 +89,18 @@ const Punkt& Figur::getSentrum() const {return sentrum;};
 void Figur::endreSentrum(Punkt& nyttSentrum){
     sentrum = nyttSentrum;
 }
+
+void Figur::roterFigur(double alfa, Punkt& rotasjonAkse){
+
+    Punkt& S = this->sentrum;
+
+    for (int i = 0; i < this->punkter.size(); i++){
+        Punkt& p = punkter.at(i);
+
+        p = p * cos(alfa) + (rotasjonAkse ^ p) * sin(alfa) + rotasjonAkse * (rotasjonAkse * p) * (1 - cos(alfa));
+    }
+}
+
 
 void Figur::sorterEtterDybde(){
 

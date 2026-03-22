@@ -18,7 +18,7 @@ int main(){
     std::cout << cam;
 
     Figur kube("./figurer/kube.obj", Punkt{WINDOW_WIDTH / 2, 5000, WINDOW_HEIGHT / 2});
-    Figur kube2("./figurer/kube.obj", Punkt{800, 100, 400});
+    Figur kube2("./figurer/kube.obj", Punkt{800, 500, 400});
 
     std::vector<Figur*> alleFigurer = {&kube, &kube2}; //&kube2
     
@@ -32,14 +32,17 @@ int main(){
         kube.sentrum.y -= 2;
 
         kube2.sentrum.x += 2;
+
+        kube2.roterFigur(degToRad(1), enhetsVektor[2]);
+
         Punkt camPos = cam.getPos();
-        camPos.z += 2;
+        //camPos.z += 2;
 
         if (camPos.z > WINDOW_HEIGHT){
             camPos.z = 0; 
         }
 
-        cam.endrePos(camPos);
+        //cam.endrePos(camPos);
 
 
         if (kube2.sentrum.x > WINDOW_WIDTH){

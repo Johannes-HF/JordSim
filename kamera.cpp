@@ -75,11 +75,7 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             const Punkt u = B - A;
             const Punkt v = C - A;
 
-            Punkt NormalVektor = {
-                u.y*v.z - u.z*v.y,
-                u.z*v.x - u.x*v.z,
-                u.x*v.y - u.y*v.x
-            };
+            Punkt NormalVektor = u ^ v;
 
             Punkt viewDir = absA - this->pos; // Vector from camera to absolute vertex
             

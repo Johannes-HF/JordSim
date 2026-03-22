@@ -7,14 +7,14 @@ struct Punkt{
     float y;
     float z;
     bool l = 1;
-
-    friend std::ostream& operator<<(std::ostream& os, const Punkt& p);
-
-    friend Punkt operator+(const Punkt& LHS, const Punkt& RHS);
-    friend Punkt operator-(const Punkt& LHS, const Punkt& RHS);
-    friend int operator*(const Punkt& LHS, const Punkt& RHS);
-
 };
+
+std::ostream& operator<<(std::ostream& os, const Punkt& p);
+Punkt operator+(const Punkt& LHS, const Punkt& RHS);
+Punkt operator-(const Punkt& LHS, const Punkt& RHS);
+float operator*(const Punkt& LHS, const Punkt& RHS); //prikk-produkt
+Punkt operator*(const Punkt& LHS, const float t);
+Punkt operator^(const Punkt& LHS, const Punkt& RHS); //Kryssprodukt
 
 inline std::array<Punkt, 6> enhetsVektor = {Punkt(1, 0, 0), Punkt(0, 1, 0), Punkt(0, 0, 1), Punkt(-1, 0, 0), Punkt(0, -1, 0), Punkt(0, 0, -1) };
 
@@ -38,8 +38,6 @@ class Figur
 
     Punkt sentrum;
 
-    
-
     const std::vector<Punkt>& getPunkter() const ;
     const std::vector<int>& getIndexer() const ;
     const std::vector<Punkt>& getRetning() const ;
@@ -48,6 +46,8 @@ class Figur
 
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();
+
+    void roterFigur(double alfa, Punkt& rotasjonAkse);
 
 };
 
@@ -61,5 +61,5 @@ class Kube : public Figur
 
 //std::vector<int> genererTrekanter(std::vector<Punkt>& p);
 
-std::vector<Punkt>& roter(std::vector<Punkt> punkter, float thetaPrFrame);
+
     
