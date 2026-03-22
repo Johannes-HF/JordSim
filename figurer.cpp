@@ -147,11 +147,19 @@ std::vector<float> sorter2Dplan(std::vector<float>& toDplan){
 
     int nyIndex = 0;
 
-    for (int i = 0; i < toDplan.size(); i+=3){
+    for (int i = 0; i < alleIndexPar.size(); i++){
 
-        nyToDplan[nyIndex] = toDplan.at(i);
-        nyToDplan[nyIndex+1] = toDplan.at(i+1);
-        nyIndex += 2;
+        nyToDplan[nyIndex] = toDplan.at(alleIndexPar.at(i).hjorne[0]-2);
+        nyToDplan[nyIndex+1] = toDplan.at(alleIndexPar.at(i).hjorne[0]-1);
+
+        nyToDplan[nyIndex+2] = toDplan.at(alleIndexPar.at(i).hjorne[1]-2);
+        nyToDplan[nyIndex+3] = toDplan.at(alleIndexPar.at(i).hjorne[1]-1);
+
+        nyToDplan[nyIndex+4] = toDplan.at(alleIndexPar.at(i).hjorne[2]-2);
+        nyToDplan[nyIndex+5] = toDplan.at(alleIndexPar.at(i).hjorne[2]-1);
+
+        nyIndex += 6;
+
     }
 
     return nyToDplan;
