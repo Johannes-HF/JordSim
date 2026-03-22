@@ -36,19 +36,19 @@ Punkt operator*(const Punkt& LHS, const float t){
 }
 
 Punkt operator^(const Punkt& LHS, const Punkt& RHS){
-    Punkt p;
 
-    p.x = LHS.y * RHS.z - LHS.z * RHS.y; 
-    p.y = LHS.z * RHS.x - LHS.x * RHS.z;
-    p.z = LHS.x * RHS.y - LHS.y * RHS.x;
-    
-    return p;
-
+    return Punkt {
+        LHS.y * RHS.z - LHS.z * RHS.y,
+        LHS.z * RHS.x - LHS.x * RHS.z,
+        LHS.x * RHS.y - LHS.y * RHS.x};
 }
 
 Figur::Figur(std::string filnavn, Punkt inSentrum){
     sentrum = inSentrum;
     sentrum.y += FOCAL;
+    omega = 0;
+
+
     ifstream fil(filnavn);
     std::string linje;
 
@@ -84,23 +84,27 @@ Figur::Figur(std::string filnavn, Punkt inSentrum){
 const std::vector<Punkt>& Figur::getPunkter() const { return punkter;};
 const std::vector<int>& Figur::getIndexer() const { return indexer;};
 const std::vector<TDT4102::Color>& Figur::getFarger() const { return farger;};
-const Punkt& Figur::getSentrum() const {return sentrum;};
+const Punkt& Figur::getSentrum() const { return sentrum;};
+const double Figur::getSpin() const { return omega;};
+
+void Figur::setSpin(double alfa, Punkt nyRotAkse){
+    omega = alfa;
+    rotAkse = nyRotAkse;
+};
+
 
 void Figur::endreSentrum(Punkt& nyttSentrum){
     sentrum = nyttSentrum;
 }
 
-void Figur::roterFigur(double alfa, Punkt& rotasjonAkse){
-
-    Punkt& S = this->sentrum;
-
+void Figur::roterFigur(){
     for (int i = 0; i < this->punkter.size(); i++){
         Punkt& p = punkter.at(i);
 
-        p = p * cos(alfa) + (rotasjonAkse ^ p) * sin(alfa) + rotasjonAkse * (rotasjonAkse * p) * (1 - cos(alfa));
+        //Rodriges rotasjonsformel
+        p = p * cos(this->omega) + (this->rotAkse ^ p) * sin(omega) + rotAkse * (rotAkse * p) * (1 - cos(omega));
     }
 }
-
 
 void Figur::sorterEtterDybde(){
 
@@ -122,6 +126,35 @@ void Figur::sorterEtterDybde(){
         indexer[i+1] = alleIndexPar.at(i/3).hjorne.at(1);
         indexer[i+2] = alleIndexPar.at(i/3).hjorne.at(2);
     }
+}
+
+std::vector<float> sorter2Dplan(std::vector<float>& toDplan){
+
+    std::vector<IndexPar> alleIndexPar;
+    std::vector<float> nyToDplan;
+    nyToDplan.resize(toDplan.size() / 3 * 2);
+
+    for (int i = 2; i < toDplan.size(); i+=9){
+        
+        int i1 = i;
+        int i2 = i+3;
+        int i3 = i+6;
+
+        alleIndexPar.push_back( {IndexPar{{i1, i2, i3}, toDplan.at(i1) + toDplan.at(i2) + toDplan.at(i3) } } );
+    }
+
+    std::sort(alleIndexPar.begin(), alleIndexPar.end(), sorterIndexPar);
+
+    int nyIndex = 0;
+
+    for (int i = 0; i < toDplan.size(); i+=3){
+
+        nyToDplan[nyIndex] = toDplan.at(i);
+        nyToDplan[nyIndex+1] = toDplan.at(i+1);
+        nyIndex += 2;
+    }
+
+    return nyToDplan;
 }
 
 

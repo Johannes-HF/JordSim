@@ -7,3 +7,5 @@ double degToRad(double deg);
 bool sorterIndexPar(IndexPar& a, IndexPar& b);
 
 float stringAspectRatioToFloat(std::string aRatio);
+
+void printTrekantKoordinater(std::vector<float>& toDplan, int figurer);

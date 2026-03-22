@@ -27,9 +27,11 @@ class Figur
 {
     protected:
 
-    std::vector<Punkt> punkter;
+    std::vector<Punkt> punkter; 
     std::vector<int> indexer;
     std::vector<TDT4102::Color> farger;
+    double omega; //Rotasjonshastighet
+    Punkt rotAkse; //rotasjonsakse
 
     
 
@@ -43,11 +45,14 @@ class Figur
     const std::vector<Punkt>& getRetning() const ;
     const std::vector<TDT4102::Color>& getFarger() const ;
     const Punkt& getSentrum() const ;
+    const double getOmega() const ;
+    const double getSpin() const ;
 
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();
+    void setSpin(double alfa, Punkt nyRotAkse);
 
-    void roterFigur(double alfa, Punkt& rotasjonAkse);
+    void roterFigur();
 
 };
 
@@ -58,6 +63,8 @@ class Kube : public Figur
 
     void genererTrekanter();
 };
+
+std::vector<float> sorter2Dplan(std::vector<float>& toDplan);
 
 //std::vector<int> genererTrekanter(std::vector<Punkt>& p);
 

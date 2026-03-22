@@ -22,6 +22,9 @@ int main(){
 
     std::vector<Figur*> alleFigurer = {&kube, &kube2}; //&kube2
     
+
+    kube2.setSpin(degToRad(1), enhetsVektor[2]);
+
     while(!window.should_close()) {
 
         window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::dark_gray);
@@ -33,16 +36,15 @@ int main(){
 
         kube2.sentrum.x += 2;
 
-        kube2.roterFigur(degToRad(1), enhetsVektor[2]);
 
         Punkt camPos = cam.getPos();
-        //camPos.z += 2;
+        camPos.z += 2;
 
         if (camPos.z > WINDOW_HEIGHT){
             camPos.z = 0; 
         }
 
-        //cam.endrePos(camPos);
+        cam.endrePos(camPos);
 
 
         if (kube2.sentrum.x > WINDOW_WIDTH){

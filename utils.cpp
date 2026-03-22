@@ -44,3 +44,22 @@ float stringAspectRatioToFloat(std::string aspectRatio){
 
     return aRatio;
 };
+
+
+void printTrekantKoordinater(std::vector<float>& toDplan, int figurer){
+    std::cout << "Figur trekant:\n" ;
+
+    std::cout << "Antall trekanter pr fig:\n" << toDplan.size() / 2.0 / 3.0 / figurer << std::endl;
+
+    for (int j = 1; j < 3; j++){
+    for (int i = 0; i < toDplan.size() / 2; i+=6){
+        std::cout << i / 6 + 1 << ".  ";
+        for (int k = 0; k < 6; k+=2){
+            cout << toDplan.at(i*j+k) << ", " << toDplan.at(j*i+k+1) << ",    ";
+        }
+        std::cout << endl;
+            
+        };
+    }
+    std::cout << std::endl;
+};

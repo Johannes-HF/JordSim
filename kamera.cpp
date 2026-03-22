@@ -43,13 +43,15 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
     double aRatio = aspArr[0] / aspArr[1];
 
-;
-
     for (int i = 0; i < figurer.size(); i++){
 
         Figur* fig = figurer.at(i);
 
-        fig->sorterEtterDybde();
+        if (fig->getSpin() != 0){
+            fig->roterFigur();
+        }
+
+        //sorterEtterDybde();
 
         for (int j = 0; j < fig->getIndexer().size(); j += 3){
 
@@ -99,8 +101,11 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
                 float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
                 float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
 
+                if (p->y - this->pos.y <= 0){ continue;}
+               
                 toDplan.push_back(xp);
-                toDplan.push_back(zp);   
+                toDplan.push_back(zp);
+                toDplan.push_back(p->y - this->pos.y);
             }
         }
  
@@ -112,26 +117,16 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
 void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*> figurer){
 
-    std::cout << "Figur trekant:\n" ;
 
-    std::vector<float> toDplan = cam.projiser(figurer);
-    
-    std::cout << "Antall trekanter pr fig:\n" << toDplan.size() / 2.0 / 3.0 / figurer.size() << std::endl;
+    std::vector<float> usortertToDplan = cam.projiser(figurer);
 
-    for (int j = 1; j < 3; j++){
-    for (int i = 0; i < toDplan.size() / 2; i+=6){
-        std::cout << i / 6 + 1 << ".  ";
-        for (int k = 0; k < 6; k+=2){
-            cout << toDplan.at(i*j+k) << ", " << toDplan.at(j*i+k+1) << ",    ";
-        }
-        std::cout << endl;
-            
-        };
-    }
-    std::cout << std::endl;
+    printTrekantKoordinater(usortertToDplan, figurer.size());
 
     std::vector<TDT4102::Color> farger {TDT4102::Color::green, TDT4102::Color::hot_pink, TDT4102::Color::royal_blue, TDT4102::Color::dark_orange};
     int fargeI = 0;
+
+    std::vector<float> toDplan = sorter2Dplan(usortertToDplan);
+
     for (int i = 0; i < toDplan.size(); i+=6){
 
         if (fargeI > 11){ fargeI = 0;}
