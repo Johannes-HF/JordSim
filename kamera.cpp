@@ -120,7 +120,7 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
 
     std::vector<float> usortertToDplan = cam.projiser(figurer);
 
-    printTrekantKoordinater(usortertToDplan, figurer.size());
+    //printTrekantKoordinater(usortertToDplan, figurer.size());
 
     std::vector<TDT4102::Color> farger {TDT4102::Color::green, TDT4102::Color::hot_pink, TDT4102::Color::royal_blue, TDT4102::Color::dark_orange};
     int fargeI = 0;
@@ -144,7 +144,7 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
             punkter.at(0), 
             punkter.at(1),  
             punkter.at(2), 
-            figurer[0]->getFarger().at(fargeI/2)
+            figurer[0]->getFarger().at(fargeI / 3)
         );
         
         fargeI ++;
