@@ -201,6 +201,13 @@ std::vector<float> sorter2Dplan(std::vector<float>& toDplan){
     return nyToDplan;
 }
 
+void Kule::Spherifiser(int radius){
+    for (int i = 0; i < this->punkter.size(); i++){
+
+        Punkt& p = this->punkter.at(i);
+        p = p * radius / sqrt(pow(p.x, 2) + pow(p.y, 2) + pow(p.z, 2));
+    }
+};
 
 void Kube::genererTrekanter(){
 

@@ -80,36 +80,36 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
     bool spaceKeyIsPressed = window.is_key_down(KeyboardKey::SPACE);
     bool lShiftKeyIsPressed = window.is_key_down(KeyboardKey::LEFT_SHIFT);
 
-
+    int skrittLengde = 5;
     
     if(dKeyIsPressed) {
         Punkt camPos = cam.getPos();
-        camPos.x += 1;
+        camPos.x += skrittLengde;
         cam.endrePos(camPos);
     };
     if(aKeyIsPressed) {
         Punkt camPos = cam.getPos();
-        camPos.x -= 1;
+        camPos.x -= skrittLengde;
         cam.endrePos(camPos);
     };
     if(wKeyIsPressed) {
         Punkt camPos = cam.getPos();
-        camPos.y += 1;
+        camPos.y += skrittLengde;
         cam.endrePos(camPos);
     };
     if(sKeyIsPressed) {
         Punkt camPos = cam.getPos();
-        camPos.y -= 1;
+        camPos.y -= skrittLengde;
         cam.endrePos(camPos);
     };
     if(lShiftKeyIsPressed && spaceKeyIsPressed) {
         Punkt camPos = cam.getPos();
-        camPos.z -= 1;
+        camPos.z -= skrittLengde;
         cam.endrePos(camPos);
     }
     else if (spaceKeyIsPressed){
         Punkt camPos = cam.getPos();
-        camPos.z += 1;
+        camPos.z += skrittLengde;
         cam.endrePos(camPos);
     };
 }

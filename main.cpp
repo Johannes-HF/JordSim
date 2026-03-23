@@ -19,14 +19,19 @@ int main(){
 
     Figur kube("./figurer/kube.obj", Punkt{WINDOW_WIDTH / 2, 5000, WINDOW_HEIGHT / 2});
     Figur kube2("./figurer/kube.obj", Punkt{800, 500, 400});
+    Kule kule("./figurer/kube.obj", Punkt{500, 500, 700});
 
-    std::vector<Figur*> alleFigurer = {&kube, &kube2}; //&kube2
+
+    std::vector<Figur*> alleFigurer = {&kube, &kube2, &kule}; //&kube2
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
     kube2.dobleTrekanter(3);
     kube.dobleTrekanter(1);
 
+    kule.dobleTrekanter(3);
+    kule.Spherifiser(100);
+    kule.setSpin(degToRad(-1), enhetsVektor[1]);
 
     std::vector<TDT4102::Point> stjerner;
 

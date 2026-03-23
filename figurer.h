@@ -66,6 +66,14 @@ class Kube : public Figur
     void genererTrekanter();
 };
 
+class Kule : public Figur
+{
+    public:
+    Kule(std::string filnavn, Punkt inSentrum) : Figur(filnavn, inSentrum) {};
+
+    void Spherifiser(int radius);
+};
+
 std::vector<float> sorter2Dplan(std::vector<float>& toDplan);
 
 //std::vector<int> genererTrekanter(std::vector<Punkt>& p);
