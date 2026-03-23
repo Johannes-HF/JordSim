@@ -21,7 +21,6 @@ int main(){
     Figur kube2("./figurer/kube.obj", Punkt{800, 500, 400});
 
     std::vector<Figur*> alleFigurer = {&kube, &kube2}; //&kube2
-    
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
@@ -37,9 +36,6 @@ int main(){
         );
     }
 
-
-
-
     while(!window.should_close()) {
 
         window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::black);
@@ -50,21 +46,11 @@ int main(){
 
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
+        sjekkKeyPressed(cam, window);
+        
         tegnFigur(&window, cam, alleFigurer); 
 
         kube.sentrum.y -= 2;
-
-        kube2.sentrum.x += 2;
-
-
-        Punkt camPos = cam.getPos();
-        camPos.z += 2;
-
-        if (camPos.z > WINDOW_HEIGHT){
-            camPos.z = 0; 
-        }
-
-        cam.endrePos(camPos);
 
 
         if (kube2.sentrum.x > WINDOW_WIDTH){

@@ -70,3 +70,47 @@ void tegnKontur (AnimationWindow* window, TDT4102::Point p1, TDT4102::Point p2, 
     window->draw_line(p2, p3, TDT4102::Color::white);
 
 }
+
+void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
+
+    bool dKeyIsPressed = window.is_key_down(KeyboardKey::D);
+    bool aKeyIsPressed = window.is_key_down(KeyboardKey::A);
+    bool wKeyIsPressed = window.is_key_down(KeyboardKey::W);
+    bool sKeyIsPressed = window.is_key_down(KeyboardKey::S);
+    bool spaceKeyIsPressed = window.is_key_down(KeyboardKey::SPACE);
+    bool lShiftKeyIsPressed = window.is_key_down(KeyboardKey::LEFT_SHIFT);
+
+
+    
+    if(dKeyIsPressed) {
+        Punkt camPos = cam.getPos();
+        camPos.x += 1;
+        cam.endrePos(camPos);
+    };
+    if(aKeyIsPressed) {
+        Punkt camPos = cam.getPos();
+        camPos.x -= 1;
+        cam.endrePos(camPos);
+    };
+    if(wKeyIsPressed) {
+        Punkt camPos = cam.getPos();
+        camPos.y += 1;
+        cam.endrePos(camPos);
+    };
+    if(sKeyIsPressed) {
+        Punkt camPos = cam.getPos();
+        camPos.y -= 1;
+        cam.endrePos(camPos);
+    };
+    if(lShiftKeyIsPressed && spaceKeyIsPressed) {
+        Punkt camPos = cam.getPos();
+        camPos.z -= 1;
+        cam.endrePos(camPos);
+    }
+    else if (spaceKeyIsPressed){
+        Punkt camPos = cam.getPos();
+        camPos.z += 1;
+        cam.endrePos(camPos);
+    };
+}
+
