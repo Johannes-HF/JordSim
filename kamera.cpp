@@ -144,8 +144,12 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
             punkter.at(0), 
             punkter.at(1),  
             punkter.at(2), 
-            figurer[0]->getFarger().at(fargeI / 3)
+            TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0)
+            //figurer[0]->getFarger().at(fargeI / 3)
         );
+
+        std::cout <<  (i) / static_cast<float>(toDplan.size()) * 255 << ", " << 255 - (i) / toDplan.size() * 255 << std::endl;
+        std::cout << toDplan.size() << std::endl;
         
         fargeI ++;
     }

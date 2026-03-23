@@ -44,7 +44,7 @@ int main(){
             window.draw_circle(p, 2, TDT4102::Color::white);
         }
 
-        window.draw_circle({100, 100}, 50, TDT4102::Color::alice_blue);
+        window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
         tegnFigur(&window, cam, alleFigurer); 
 
