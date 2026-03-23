@@ -51,6 +51,7 @@ class Figur
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();
     void setSpin(double alfa, Punkt nyRotAkse);
+    void dobleTrekanter();
 
     void roterFigur();
 

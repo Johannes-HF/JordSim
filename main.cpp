@@ -25,9 +25,25 @@ int main(){
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
+    std::vector<TDT4102::Point> stjerner;
+
+    for (int i= 0; i < 100; i++){
+        stjerner.push_back(
+            TDT4102::Point{randomInt(0, WINDOW_WIDTH), randomInt(0, WINDOW_HEIGHT)}
+        );
+    }
+
+
+
+
     while(!window.should_close()) {
 
-        window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::dark_gray);
+        window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::black);
+
+        for (TDT4102::Point p : stjerner){
+            window.draw_circle(p, 2, TDT4102::Color::white);
+        }
+
         window.draw_circle({100, 100}, 50, TDT4102::Color::alice_blue);
 
         tegnFigur(&window, cam, alleFigurer); 
