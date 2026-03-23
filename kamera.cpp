@@ -148,8 +148,7 @@ void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*
             //figurer[0]->getFarger().at(fargeI / 3)
         );
 
-        std::cout <<  (i) / static_cast<float>(toDplan.size()) * 255 << ", " << 255 - (i) / toDplan.size() * 255 << std::endl;
-        std::cout << toDplan.size() << std::endl;
+        tegnKontur (window, punkter.at(0), punkter.at(1), punkter.at(2));
         
         fargeI ++;
     }
