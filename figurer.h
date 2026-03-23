@@ -14,6 +14,7 @@ Punkt operator+(const Punkt& LHS, const Punkt& RHS);
 Punkt operator-(const Punkt& LHS, const Punkt& RHS);
 float operator*(const Punkt& LHS, const Punkt& RHS); //prikk-produkt
 Punkt operator*(const Punkt& LHS, const float t);
+Punkt operator/(const Punkt& LHS, const float t);
 Punkt operator^(const Punkt& LHS, const Punkt& RHS); //Kryssprodukt
 
 inline std::array<Punkt, 6> enhetsVektor = {Punkt(1, 0, 0), Punkt(0, 1, 0), Punkt(0, 0, 1), Punkt(-1, 0, 0), Punkt(0, -1, 0), Punkt(0, 0, -1) };
@@ -51,7 +52,7 @@ class Figur
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();
     void setSpin(double alfa, Punkt nyRotAkse);
-    void dobleTrekanter();
+    void dobleTrekanter(int antallDupliseringer);
 
     void roterFigur();
 

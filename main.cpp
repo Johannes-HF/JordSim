@@ -25,6 +25,10 @@ int main(){
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
+    kube2.dobleTrekanter(3);
+    kube.dobleTrekanter(1);
+
+
     std::vector<TDT4102::Point> stjerner;
 
     for (int i= 0; i < 100; i++){

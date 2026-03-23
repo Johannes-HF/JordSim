@@ -34,6 +34,9 @@ float operator*(const Punkt& LHS, const Punkt& RHS){
 Punkt operator*(const Punkt& LHS, const float t){
     return Punkt {LHS.x * t, LHS.y * t, LHS.z * t};
 }
+Punkt operator/(const Punkt& LHS, const float t){
+    return Punkt {LHS.x / t, LHS.y / t, LHS.z / t};
+}
 
 Punkt operator^(const Punkt& LHS, const Punkt& RHS){
 
@@ -105,6 +108,39 @@ void Figur::roterFigur(){
         p = p * cos(this->omega) + (this->rotAkse ^ p) * sin(omega) + rotAkse * (rotAkse * p) * (1 - cos(omega));
     }
 }
+
+void Figur::dobleTrekanter(int antallDupliseringer){
+
+    for (int i = 0; i < antallDupliseringer; i++){
+
+        int antallGamleIndexer = this->indexer.size();
+        
+        for (int j = 0; j < antallGamleIndexer; j+=3){
+    
+int idxA = this->indexer.at(j);
+        int idxB = this->indexer.at(j + 1);
+        int idxC = this->indexer.at(j + 2);
+
+        Punkt X = this->punkter.at(idxA) + (this->punkter.at(idxB) - this->punkter.at(idxA)) / 2;
+        Punkt Y = this->punkter.at(idxB) + (this->punkter.at(idxC) - this->punkter.at(idxB)) / 2;
+        Punkt Z = this->punkter.at(idxA) + (this->punkter.at(idxC) - this->punkter.at(idxA)) / 2;
+
+        int idxX = this->punkter.size(); this->punkter.push_back(X);
+        int idxY = this->punkter.size(); this->punkter.push_back(Y);
+        int idxZ = this->punkter.size(); this->punkter.push_back(Z);
+
+      
+        this->indexer.at(j)     = idxA;
+        this->indexer.at(j + 1) = idxX;
+        this->indexer.at(j + 2) = idxZ;
+
+        this->indexer.push_back(idxX); this->indexer.push_back(idxB); this->indexer.push_back(idxY);
+        this->indexer.push_back(idxZ); this->indexer.push_back(idxY); this->indexer.push_back(idxC);
+        this->indexer.push_back(idxX); this->indexer.push_back(idxY); this->indexer.push_back(idxZ);
+        }
+    }
+
+};
 
 void Figur::sorterEtterDybde(){
 
