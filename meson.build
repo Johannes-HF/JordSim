@@ -23,6 +23,7 @@ exe = executable(
   src,
 'figurer.cpp',
 'kamera.cpp',
+'lesBilder.cpp',
 'main.cpp',
 'tegnFigurer.cpp',
 'utils.cpp',

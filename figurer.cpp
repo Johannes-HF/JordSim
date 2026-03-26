@@ -164,7 +164,7 @@ void Figur::sorterEtterDybde(){
     }
 }
 
-std::vector<float> sorter2Dplan(std::vector<float>& toDplan){
+std::vector<float> sorter2Dplan(const std::vector<float>& toDplan){
 
     std::vector<IndexPar> alleIndexPar;
     std::vector<float> nyToDplan;
@@ -201,13 +201,49 @@ std::vector<float> sorter2Dplan(std::vector<float>& toDplan){
     return nyToDplan;
 }
 
-void Kule::Spherifiser(int radius){
-    for (int i = 0; i < this->punkter.size(); i++){
+const std::vector<float>& Kule::getUVKoordinater() const {return UV_koordinater;};
 
+void Kule::Spherifiser(int inRadius){
+    for (int i = 0; i < this->punkter.size(); i++){
+        this->radius = inRadius;
         Punkt& p = this->punkter.at(i);
-        p = p * radius / sqrt(pow(p.x, 2) + pow(p.y, 2) + pow(p.z, 2));
+        p = p * inRadius / sqrt(pow(p.x, 2) + pow(p.y, 2) + pow(p.z, 2));
     }
 };
+
+std::vector<std::array<double, 2>> Kule::KartesiskTilSpherisk(){
+    std::vector<std::array<double, 2>> spheriskKoordinat(this->punkter.size());
+    int i = 0;
+    for (Punkt p : this->punkter){
+        double bredde = asin(p.z/this->radius); // Phi
+        double lengde = atan2(p.x , p.y); // lambda
+
+        spheriskKoordinat.at(i) = {bredde, lengde};
+
+        i++;
+    }
+    return spheriskKoordinat;
+};
+
+void Kule::brettUt(int bredde, int hoyde){
+    std::vector<std::array<double, 2>> spheriskKoordinat = KartesiskTilSpherisk(); // [phi, lambda]
+
+    this->UV_koordinater.resize(this->indexer.size() * 3);
+
+    int i = 0;
+    for (int idx : this->indexer){
+
+        std::array<double, 2>& p = spheriskKoordinat.at(idx);
+
+        float u = (p.at(1) + M_PI)  / (2 * M_PI) * bredde;
+        float v = (M_PI / 2 - p.at(0)) / M_PI * hoyde;
+
+        this->UV_koordinater.at(i) = u;
+        this->UV_koordinater.at(i+1) = v;
+        this->UV_koordinater.at(i+2) = this->sentrum.y;
+        i += 3;
+    }
+}
 
 void Kube::genererTrekanter(){
 

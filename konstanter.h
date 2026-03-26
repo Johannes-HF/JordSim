@@ -17,3 +17,6 @@ constexpr float KAMERA_1_FOV = 30.0;
 constexpr double A_RATIO[2] = {16, 9};
 const double FOCAL = (WINDOW_HEIGHT / 2) / std::tan(degToRad(KAMERA_1_FOV));
 
+//Bilder
+
+constexpr char* jordKart = "bilder/verden.png";

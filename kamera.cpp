@@ -4,6 +4,7 @@
 #include "kamera.h"
 #include "utils.h"
 #include "konstanter.h"
+#include <cmath>
 
 std::ostream& operator<<(std::ostream& os, const Kamera& cam){
     os << "Vinkel/fov: [" << cam.fov[0] << ", " << cam.fov[1] << "]"
@@ -33,6 +34,13 @@ void Kamera::endrePos(Punkt& p){
 
 const array<double, 2>& Kamera::getFov() const {return fov;}
 const array<double, 2>& Kamera::getAspect() const {return aspectRatio;};
+const Punkt& Kamera::getRetning() const {return retning;};
+
+void Kamera::roterKamera(Punkt omega){
+    Punkt nyRetning = omega + this->retning;
+    this->retning =  nyRetning / sqrt(nyRetning * nyRetning);
+};
+
 
 
 std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
@@ -112,45 +120,5 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
     }
 
     return toDplan;
-
-};
-
-void tegnFigur(TDT4102::AnimationWindow* window, Kamera& cam, std::vector<Figur*> figurer){
-
-
-    std::vector<float> usortertToDplan = cam.projiser(figurer);
-
-    //printTrekantKoordinater(usortertToDplan, figurer.size());
-
-    std::vector<TDT4102::Color> farger {TDT4102::Color::green, TDT4102::Color::hot_pink, TDT4102::Color::royal_blue, TDT4102::Color::dark_orange};
-    int fargeI = 0;
-
-    std::vector<float> toDplan = sorter2Dplan(usortertToDplan);
-
-    for (int i = 0; i < toDplan.size(); i+=6){
-
-        if (fargeI > 11){ fargeI = 0;}
-
-        std::vector<TDT4102::Point> punkter = {};
-
-        for (int j = 0; j < 6; j+=2){
-
-            TDT4102::Point p {toDplan.at(i+j), toDplan.at(i+j+1)};
-            punkter.push_back(p);
-           // std::cout << toDplan.at(i+j) << ", " <<  toDplan.at(i+j+1) << std::endl; // x og y koord
-        }
-
-        window->draw_triangle(
-            punkter.at(0), 
-            punkter.at(1),  
-            punkter.at(2), 
-            TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0)
-            //figurer[0]->getFarger().at(fargeI / 3)
-        );
-
-        tegnKontur (window, punkter.at(0), punkter.at(1), punkter.at(2));
-        
-        fargeI ++;
-    }
 
 };

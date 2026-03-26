@@ -34,8 +34,6 @@ class Figur
     double omega; //Rotasjonshastighet
     Punkt rotAkse; //rotasjonsakse
 
-    
-
     public:
     Figur(std::string filnavn, Punkt inSentrum);
 
@@ -67,14 +65,22 @@ class Kube : public Figur
 };
 
 class Kule : public Figur
-{
+{   
+    int radius = 100;
+
+    std::vector<float> UV_koordinater;
+
+    std::vector<std::array<double, 2>> KartesiskTilSpherisk();
+
     public:
     Kule(std::string filnavn, Punkt inSentrum) : Figur(filnavn, inSentrum) {};
 
-    void Spherifiser(int radius);
+    void Spherifiser(int inRadius);
+    void brettUt(int bredde, int hoyde);
+    const std::vector<float>& getUVKoordinater() const;
 };
 
-std::vector<float> sorter2Dplan(std::vector<float>& toDplan);
+std::vector<float> sorter2Dplan(const std::vector<float>& toDplan);
 
 //std::vector<int> genererTrekanter(std::vector<Punkt>& p);
 
