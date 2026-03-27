@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "lesBilder.h"
 #include <cmath>
+#include <chrono>
 
 int main(){
 
@@ -49,7 +50,14 @@ int main(){
 
     int rotasjon = 0;
     bool baklengs = 0;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    bool debug = true;
+
     while(!window.should_close()) {
+
+        
 
         window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::black);
 
@@ -65,7 +73,6 @@ int main(){
             }
         }
 
-
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
         sjekkKeyPressed(cam, window);
@@ -77,26 +84,24 @@ int main(){
 
         kube.sentrum.y -= 2;
 
-
-
-
         if (kube2.sentrum.x > WINDOW_WIDTH){
             kube2.sentrum.x = 0;
         }
 
+        auto end = std::chrono::high_resolution_clock::now();
+        long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-        // cam.roterKamera({static_cast<float>(pow(-1, baklengs)), 0, 0});
+        if (debug){
+            int FPS = getFPS(ms);
+            
+            debugInfo(cam, window, FPS);    
+        }
 
-        // if (rotasjon < 60){ 
-        //     if (baklengs == 0){rotasjon += 1;}
-        //     else{ rotasjon -= 1;}
-        // }   
-        // else{baklengs = 1;}
-        // if (rotasjon < 0){
-        //     baklengs = 0;
-        // }
+        start = std::chrono::high_resolution_clock::now();
 
         window.next_frame();
+
+
 
     }
     

@@ -2,6 +2,8 @@
 #include <random>
 #include <cmath>
 #include "figurer.h"
+#include "konstanter.h"
+#include <chrono>
 
 int randomInt(int low, int high){
     random_device rd;
@@ -113,4 +115,21 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
         cam.endrePos(camPos);
     };
 }
+
+int getFPS(long long løkkeTidMS){
+    return static_cast<int>(1000 / løkkeTidMS);
+};
+
+void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS){
+
+    Punkt camPos = cam.getPos();
+
+    std::string koords = std::format("x: {:.0f} | y: {:.0f} | z: {:.0f}", camPos.x, camPos.y, camPos.z);
+    std::string fpsString = std::format("FPS: {}", FPS);
+
+    window.draw_rectangle({0, WINDOW_HEIGHT - 90}, koords.size() * 12 + 20, 80, TDT4102::Color{40, 40, 40});
+    window.draw_text({20, WINDOW_HEIGHT - 80}, koords, TDT4102::Color::white, 30);
+    window.draw_text({20, WINDOW_HEIGHT - 50}, fpsString, TDT4102::Color::white, 30);
+
+};
 

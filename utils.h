@@ -15,3 +15,7 @@ void tegnKontur (AnimationWindow* window, TDT4102::Point p1, TDT4102::Point p2, 
     
 void sjekkKeyPressed(Kamera& cam, AnimationWindow& window);
 
+int getFPS(long long løkkeTidMs);
+
+void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS);
+
