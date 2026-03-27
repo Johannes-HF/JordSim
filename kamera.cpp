@@ -54,6 +54,10 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
     for (int i = 0; i < figurer.size(); i++){
 
         Figur* fig = figurer.at(i);
+        std::vector<Punkt> punkter = fig->getPunkter();
+        std::vector<int> indexer = fig->getIndexer();
+        Punkt sentrum = fig->getSentrum();
+        const std::vector<TDT4102::Color>& farger = fig->getFarger();
 
         if (fig->getSpin() != 0){
             fig->roterFigur();
@@ -61,15 +65,17 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
         //sorterEtterDybde();
 
-        for (int j = 0; j < fig->getIndexer().size(); j += 3){
+        int antallFarger = fig->getFarger().size();
 
-            const Punkt& A =  fig->getPunkter().at(fig->getIndexer().at(j));
-            const Punkt& B =  fig->getPunkter().at(fig->getIndexer().at(j+1));
-            const Punkt& C =  fig->getPunkter().at(fig->getIndexer().at(j+2));
+        for (int j = 0; j < indexer.size(); j += 3){
 
-            const Punkt absA = A + fig->getSentrum();
-            const Punkt absB = B + fig->getSentrum();
-            const Punkt absC = C + fig->getSentrum();
+            const Punkt& A =  punkter.at(indexer.at(j));
+            const Punkt& B =  punkter.at(indexer.at(j+1));
+            const Punkt& C =  punkter.at(indexer.at(j+2));
+
+            const Punkt absA = A + sentrum;
+            const Punkt absB = B + sentrum;
+            const Punkt absC = C + sentrum;
 
             double dA = absA.y - this->pos.y;
             double dB = absB.y - this->pos.y;
@@ -93,18 +99,11 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
                 continue;
             }
 
-            //Sjekker om z koordinaten er over der man ser
-            double hyp = std::tan(fov[0]);            
-     
-            hyp = std::tan(fov[1]);
-            
-            //Sjekker om x koordinaten er lenger til siden enn der man ser
-
-            std::vector<const Punkt*> hjorner{&absA, &absB, &absC};
+            const Punkt* hjorner[3] = {&absA, &absB, &absC};
 
             for (int k = 0; k < 3; k++){
 
-                const Punkt* p = hjorner.at(k);
+                const Punkt* p = hjorner[k];
 
                 float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
                 float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
@@ -114,9 +113,13 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
                 toDplan.push_back(xp);
                 toDplan.push_back(zp);
                 toDplan.push_back(p->y - this->pos.y);
+                
             }
+            TDT4102::Color c = farger.at(j / 3);
+            toDplan.push_back(c.redChannel);
+            toDplan.push_back(c.greenChannel);
+            toDplan.push_back(c.blueChannel);
         }
- 
     }
 
     return toDplan;

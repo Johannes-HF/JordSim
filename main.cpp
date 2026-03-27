@@ -67,11 +67,11 @@ int main(){
             stjerneIndex ++;
         }
 
-        for (int i = 0; i < 320*5; i+=8){
-            for (int k = 0; k < 160*8; k+=8){
-                window.draw_circle({i, k}, 8, Jordfarger.at(k/8 * 320 + i/8));
-            }
-        }
+        // for (int i = 0; i < 320*5; i+=8){
+        //     for (int k = 0; k < 160*8; k+=8){
+        //         window.draw_circle({i, k}, 8, Jordfarger.at(k/8 * 320 + i/8));
+        //     }
+        // }
 
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 

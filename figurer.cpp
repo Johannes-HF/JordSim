@@ -117,7 +117,7 @@ void Figur::dobleTrekanter(int antallDupliseringer){
         
         for (int j = 0; j < antallGamleIndexer; j+=3){
     
-int idxA = this->indexer.at(j);
+        int idxA = this->indexer.at(j);
         int idxB = this->indexer.at(j + 1);
         int idxC = this->indexer.at(j + 2);
 
@@ -137,6 +137,13 @@ int idxA = this->indexer.at(j);
         this->indexer.push_back(idxX); this->indexer.push_back(idxB); this->indexer.push_back(idxY);
         this->indexer.push_back(idxZ); this->indexer.push_back(idxY); this->indexer.push_back(idxC);
         this->indexer.push_back(idxX); this->indexer.push_back(idxY); this->indexer.push_back(idxZ);
+
+        TDT4102::Color morFarge = this->farger.at(j / 3);
+        this->farger.at(j / 3) = morFarge;
+        this->farger.push_back(morFarge);
+        this->farger.push_back(morFarge);
+        this->farger.push_back(morFarge);
+
         }
     }
 
@@ -168,11 +175,11 @@ std::vector<float> sorter2Dplan(const std::vector<float>& toDplan){
 
     std::vector<IndexPar> alleIndexPar;
     std::vector<float> nyToDplan;
-    nyToDplan.resize(toDplan.size() / 3 * 2);
+    nyToDplan.resize(toDplan.size() / 12 * 9);
 
-    for (int i = 2; i < toDplan.size(); i+=9){
-        
-        int i1 = i;
+    for (int i = 2; i < toDplan.size(); i+=12){
+        // y-verdiene til trekanten
+        int i1 = i; 
         int i2 = i+3;
         int i3 = i+6;
 
@@ -185,7 +192,7 @@ std::vector<float> sorter2Dplan(const std::vector<float>& toDplan){
 
     for (int i = 0; i < alleIndexPar.size(); i++){
 
-        nyToDplan[nyIndex] = toDplan.at(alleIndexPar.at(i).hjorne[0]-2);
+        nyToDplan[nyIndex] = toDplan.at(alleIndexPar.at(i).hjorne[0]-2); // Trekker fra 2 for å få x-verdien
         nyToDplan[nyIndex+1] = toDplan.at(alleIndexPar.at(i).hjorne[0]-1);
 
         nyToDplan[nyIndex+2] = toDplan.at(alleIndexPar.at(i).hjorne[1]-2);
@@ -194,7 +201,11 @@ std::vector<float> sorter2Dplan(const std::vector<float>& toDplan){
         nyToDplan[nyIndex+4] = toDplan.at(alleIndexPar.at(i).hjorne[2]-2);
         nyToDplan[nyIndex+5] = toDplan.at(alleIndexPar.at(i).hjorne[2]-1);
 
-        nyIndex += 6;
+        nyToDplan[nyIndex+6] = toDplan.at(alleIndexPar.at(i).hjorne[2]+1);
+        nyToDplan[nyIndex+7] = toDplan.at(alleIndexPar.at(i).hjorne[2]+2);
+        nyToDplan[nyIndex+8] = toDplan.at(alleIndexPar.at(i).hjorne[2]+3);
+
+        nyIndex += 9;
 
     }
 

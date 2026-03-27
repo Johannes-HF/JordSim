@@ -12,7 +12,7 @@ void  tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vect
 
     std::vector<float> toDplan = sorter2Dplan(figurer);
 
-    for (int i = 0; i < toDplan.size(); i+=6){
+    for (int i = 0; i < toDplan.size(); i+=9){
 
         if (fargeI > 11){ fargeI = 0;}
 
@@ -29,7 +29,8 @@ void  tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vect
             punkter.at(0), 
             punkter.at(1),  
             punkter.at(2), 
-            TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0)
+            TDT4102::Color{toDplan.at(i+6), toDplan.at(i+7), toDplan.at(i+8)}
+            //TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0)
             //figurer[0]->getFarger().at(fargeI / 3)
         );
 
