@@ -12,8 +12,9 @@
 
 int main(){
 
-
-    std::vector<TDT4102::Color> Jordfarger = lesBilde(jordKart);
+    int jordW;
+    int jordH;
+    std::vector<TDT4102::Color>* Jordfarger = lesBilde(jordKart, jordW, jordH);
 
     TDT4102::AnimationWindow window(WINDOW_POSITION_X, WINDOW_POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE );
 
@@ -29,16 +30,22 @@ int main(){
     Kule kule("./figurer/kube.obj", Punkt{500, 500, 700});
 
 
-    std::vector<Figur*> alleFigurer = {&kube, &kube2, &kule}; //&kube2
+    std::vector<Figur*> alleFigurer = {&kule}; //&kube, &kube2,
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
     kube2.dobleTrekanter(3);
     kube.dobleTrekanter(1);
 
-    kule.dobleTrekanter(3);
-    //kule.Spherifiser(100);
-    //kule.setSpin(degToRad(-1), enhetsVektor[1]);
+    kule.dobleTrekanter(7);
+    kule.Spherifiser(500);
+
+    kule.setSpin(degToRad(0.2), enhetsVektor[2]);
+
+    kule.mapBildeTilKule(jordKart);
+
+    kule.brettUt(800, 450);
+
 
     std::vector<TDT4102::Point> stjerner;
 
@@ -57,8 +64,6 @@ int main(){
 
     while(!window.should_close()) {
 
-        
-
         window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::black);
 
         int stjerneIndex = 0;
@@ -67,25 +72,15 @@ int main(){
             stjerneIndex ++;
         }
 
-        // for (int i = 0; i < 320*5; i+=8){
-        //     for (int k = 0; k < 160*8; k+=8){
-        //         window.draw_circle({i, k}, 8, Jordfarger.at(k/8 * 320 + i/8));
-        //     }
-        // }
-
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
-        sjekkKeyPressed(cam, window);
-        
         tegn3DFigur(&window, cam, alleFigurer); 
 
-        kule.brettUt(800, 450);
+        sjekkKeyPressed(cam, window);
+
+        if (tegnKart){
+
         tegn2DFigur(&window, cam, kule.getUVKoordinater());
-
-        kube.sentrum.y -= 2;
-
-        if (kube2.sentrum.x > WINDOW_WIDTH){
-            kube2.sentrum.x = 0;
         }
 
         auto end = std::chrono::high_resolution_clock::now();
@@ -101,9 +96,8 @@ int main(){
 
         window.next_frame();
 
-
-
     }
     
+    delete Jordfarger;
     return 0;
 }

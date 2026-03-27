@@ -16,15 +16,18 @@ TDT4102::Color getPixelColor(SDL_Surface* surf, int bredde, int hoyde){
 
 };
 
-std::vector<TDT4102::Color> lesBilde(char* filbane){
+std::vector<TDT4102::Color>* lesBilde(char* filbane, int& w, int& h){
 
     SDL_Surface* surf = IMG_Load(filbane);
 
-    std::vector<TDT4102::Color> farger(surf->w * surf->h);
+    w = surf->w;
+    h = surf->h;
 
-    for (int i = 0; i < surf->w; i ++){
-        for (int k = 0; k < surf->h; k++){
-            farger.at(k * surf->w + i) = getPixelColor(surf, i, k);
+    std::vector<TDT4102::Color>* farger = new std::vector<TDT4102::Color>(surf->w * surf->h);
+
+    for (int i = 0; i < w; i ++){
+        for (int k = 0; k < h; k++){
+            farger->at(k * w + i) = getPixelColor(surf, i, k);
         }
     }
     SDL_FreeSurface(surf);

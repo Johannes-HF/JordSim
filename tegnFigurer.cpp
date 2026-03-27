@@ -1,7 +1,8 @@
 #include "AnimationWindow.h"
 #include "std_lib_facilities.h"
 #include "tegnFigurer.h"
-#include "figurer.h"
+#include "figurer.h"        
+#include "konstanter.h"
 #include "utils.h"
 
 
@@ -23,18 +24,25 @@ void  tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vect
             TDT4102::Point p {toDplan.at(i+j), toDplan.at(i+j+1)};
             punkter.push_back(p);
            // std::cout << toDplan.at(i+j) << ", " <<  toDplan.at(i+j+1) << std::endl; // x og y koord
+            }
+        
+        TDT4102::Color f;
+        if (gradient){
+            f = TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0);
         }
-
+        else{
+            f = TDT4102::Color{toDplan.at(i+6), toDplan.at(i+7), toDplan.at(i+8)};
+        };
         window->draw_triangle(
             punkter.at(0), 
             punkter.at(1),  
             punkter.at(2), 
-            TDT4102::Color{toDplan.at(i+6), toDplan.at(i+7), toDplan.at(i+8)}
-            //TDT4102::Color( (i) / static_cast<float>(toDplan.size()) * 255, 255 - (i) / static_cast<float>(toDplan.size()) * 255, 0)
-            //figurer[0]->getFarger().at(fargeI / 3)
+            f
         );
+        if (kontur){
+            tegnKontur (window, punkter.at(0), punkter.at(1), punkter.at(2));
 
-        tegnKontur (window, punkter.at(0), punkter.at(1), punkter.at(2));
+        }
         
         fargeI ++;
     }

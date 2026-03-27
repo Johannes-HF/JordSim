@@ -2,8 +2,10 @@
 #include "AnimationWindow.h"
 #include "figurer.h"
 #include "konstanter.h"
+#include "lesBilder.h"
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 
 std::ostream& operator<<(std::ostream& os, const Punkt& p){
@@ -239,21 +241,63 @@ std::vector<std::array<double, 2>> Kule::KartesiskTilSpherisk(){
 void Kule::brettUt(int bredde, int hoyde){
     std::vector<std::array<double, 2>> spheriskKoordinat = KartesiskTilSpherisk(); // [phi, lambda]
 
-    this->UV_koordinater.resize(this->indexer.size() * 3);
+    this->UV_koordinater.clear();
 
-    int i = 0;
-    for (int idx : this->indexer){
+    for (int t = 0; t < (int)this->indexer.size(); t += 3){
+        float us[3], vs[3];
 
-        std::array<double, 2>& p = spheriskKoordinat.at(idx);
+        for (int k = 0; k < 3; k++){
+            std::array<double, 2>& p = spheriskKoordinat.at(this->indexer.at(t + k));
+            us[k] = (p.at(1) + M_PI) / (2 * M_PI) * bredde;
+            vs[k] = (M_PI / 2 - p.at(0)) / M_PI * hoyde;
+        }
 
-        float u = (p.at(1) + M_PI)  / (2 * M_PI) * bredde;
-        float v = (M_PI / 2 - p.at(0)) / M_PI * hoyde;
+        float uMin = *std::min_element(us, us + 3);
+        float uMax = *std::max_element(us, us + 3);
+        if (uMax - uMin > bredde / 2.0f) continue;
 
-        this->UV_koordinater.at(i) = u;
-        this->UV_koordinater.at(i+1) = v;
-        this->UV_koordinater.at(i+2) = this->sentrum.y;
-        i += 3;
+        for (int k = 0; k < 3; k++){
+            UV_koordinater.push_back(us[k]);
+            UV_koordinater.push_back(vs[k]);
+            UV_koordinater.push_back(this->sentrum.y);
+        }
+        TDT4102::Color c = this->farger.at(t / 3);
+        UV_koordinater.push_back(c.redChannel);
+        UV_koordinater.push_back(c.greenChannel);
+        UV_koordinater.push_back(c.blueChannel);
     }
+}
+
+void Kule::mapBildeTilKule(char* filbane){
+    int w, h;
+    std::vector<TDT4102::Color>* pixelFarger = lesBilde(filbane, w, h);
+    std::vector<std::array<double, 2>> spherisk = KartesiskTilSpherisk();
+
+    for (int t = 0; t < (int)this->indexer.size(); t += 3){
+        float us[3], vs[3];
+        for (int k = 0; k < 3; k++){
+            std::array<double, 2>& p = spherisk.at(this->indexer.at(t + k));
+            us[k] = (p.at(1) + M_PI) / (2 * M_PI);
+            vs[k] = (M_PI / 2 - p.at(0)) / M_PI;
+        }
+
+        float uMin = *std::min_element(us, us + 3);
+        float uMax = *std::max_element(us, us + 3);
+        if (uMax - uMin > 0.5f){
+            for (int k = 0; k < 3; k++)
+                if (us[k] < 0.5f) us[k] += 1.0f;
+        }
+
+        float u = std::fmod((us[0] + us[1] + us[2]) / 3.0f, 1.0f);
+        float v = (vs[0] + vs[1] + vs[2]) / 3.0f;
+
+        int px = (int)(u * w) % w;
+        int py = (int)(v * h) % h;
+
+        this->farger.at(t / 3) = pixelFarger->at(py * w + px);
+    }
+
+    delete pixelFarger;
 }
 
 void Kube::genererTrekanter(){

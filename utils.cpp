@@ -104,12 +104,12 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
         camPos.y -= skrittLengde;
         cam.endrePos(camPos);
     };
-    if(lShiftKeyIsPressed && spaceKeyIsPressed) {
+    if(lShiftKeyIsPressed) {
         Punkt camPos = cam.getPos();
         camPos.z -= skrittLengde;
         cam.endrePos(camPos);
     }
-    else if (spaceKeyIsPressed){
+    if (spaceKeyIsPressed){
         Punkt camPos = cam.getPos();
         camPos.z += skrittLengde;
         cam.endrePos(camPos);

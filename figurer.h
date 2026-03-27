@@ -51,7 +51,6 @@ class Figur
     void sorterEtterDybde();
     void setSpin(double alfa, Punkt nyRotAkse);
     void dobleTrekanter(int antallDupliseringer);
-
     void roterFigur();
 
 };
@@ -77,6 +76,7 @@ class Kule : public Figur
 
     void Spherifiser(int inRadius);
     void brettUt(int bredde, int hoyde);
+    void mapBildeTilKule(char* filbane);
     const std::vector<float>& getUVKoordinater() const;
 };
 
