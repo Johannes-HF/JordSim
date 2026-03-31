@@ -17,5 +17,5 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window);
 
 int getFPS(long long løkkeTidMs);
 
-void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS);
+void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTrekanter);
 

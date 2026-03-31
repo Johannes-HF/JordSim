@@ -30,17 +30,17 @@ int main(){
     Kule kule("./figurer/kube.obj", Punkt{500, 500, 700});
 
 
-    std::vector<Figur*> alleFigurer = {&kule}; //&kube, &kube2,
+    std::vector<Figur*> alleFigurer = {&kule, &kube}; //&kube, &kube2,
 
     kube2.setSpin(degToRad(1), enhetsVektor[2]);
 
     kube2.dobleTrekanter(3);
     kube.dobleTrekanter(1);
 
-    kule.dobleTrekanter(7);
+    kule.dobleTrekanter(6);
     kule.Spherifiser(500);
 
-    kule.setSpin(degToRad(0.2), enhetsVektor[2]);
+    kule.setSpin(degToRad(1), enhetsVektor[2]);
 
     kule.mapBildeTilKule(jordKart);
 
@@ -60,7 +60,6 @@ int main(){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    bool debug = true;
 
     while(!window.should_close()) {
 
@@ -86,10 +85,16 @@ int main(){
         auto end = std::chrono::high_resolution_clock::now();
         long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
+        int antallTrekanter = 0;
+
         if (debug){
+            
+            for (Figur* fig : alleFigurer){
+                antallTrekanter += fig->getIndexer().size() / 3;
+            }
             int FPS = getFPS(ms);
             
-            debugInfo(cam, window, FPS);    
+            debugInfo(cam, window, FPS, antallTrekanter);    
         }
 
         start = std::chrono::high_resolution_clock::now();

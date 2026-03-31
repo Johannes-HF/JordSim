@@ -120,16 +120,25 @@ int getFPS(long long løkkeTidMS){
     return static_cast<int>(1000 / løkkeTidMS);
 };
 
-void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS){
+void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTrekanter){
 
     Punkt camPos = cam.getPos();
 
     std::string koords = std::format("x: {:.0f} | y: {:.0f} | z: {:.0f}", camPos.x, camPos.y, camPos.z);
     std::string fpsString = std::format("FPS: {}", FPS);
+    std::string antallTrekanerString = std::format("Trekanter: {}", antallTrekanter);
 
-    window.draw_rectangle({0, WINDOW_HEIGHT - 90}, koords.size() * 12 + 20, 80, TDT4102::Color{40, 40, 40});
+
+    int debugBredde = koords.size() * 12 + 20;
+    int fpsBredde = (fpsString.size() + antallTrekanerString.size()) * 13 + 60; 
+    if ( fpsBredde > debugBredde){
+        debugBredde = fpsBredde;
+    };
+
+    window.draw_rectangle({0, WINDOW_HEIGHT - 90}, debugBredde, 80, TDT4102::Color{40, 40, 40});
     window.draw_text({20, WINDOW_HEIGHT - 80}, koords, TDT4102::Color::white, 30);
     window.draw_text({20, WINDOW_HEIGHT - 50}, fpsString, TDT4102::Color::white, 30);
+    window.draw_text({static_cast<int>(fpsString.size() * 15 + 20), WINDOW_HEIGHT - 50}, antallTrekanerString, TDT4102::Color::white, 30);
 
 };
 

@@ -20,8 +20,9 @@ const double FOCAL = (WINDOW_HEIGHT / 2) / std::tan(degToRad(KAMERA_1_FOV));
 //Figur
 constexpr bool gradient = false;
 constexpr bool kontur = false;
-
 //Bilder
 
 constexpr char* jordKart = "bilder/verden.png";
 constexpr bool tegnKart = false;
+constexpr bool debug = true;
+

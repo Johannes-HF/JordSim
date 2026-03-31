@@ -80,6 +80,18 @@ class Kule : public Figur
     const std::vector<float>& getUVKoordinater() const;
 };
 
+class CelestialKropp : Kule{
+
+
+    int masse;
+    int fart;
+    
+
+    public:
+
+    CelestialKropp(std::string filnavn, Punkt inSentrum) : Kule(filnavn, inSentrum){};
+
+};
 std::vector<float> sorter2Dplan(const std::vector<float>& toDplan);
 
 //std::vector<int> genererTrekanter(std::vector<Punkt>& p);

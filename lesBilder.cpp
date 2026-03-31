@@ -27,7 +27,7 @@ std::vector<TDT4102::Color>* lesBilde(char* filbane, int& w, int& h){
 
     for (int i = 0; i < w; i ++){
         for (int k = 0; k < h; k++){
-            farger->at(k * w + i) = getPixelColor(surf, i, k);
+            farger->at((k * w + (w-i-1))) = getPixelColor(surf, i, k);
         }
     }
     SDL_FreeSurface(surf);
