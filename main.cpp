@@ -18,34 +18,29 @@ int main(){
 
     TDT4102::AnimationWindow window(WINDOW_POSITION_X, WINDOW_POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE );
 
-    Punkt p{WINDOW_WIDTH / 2, 0, WINDOW_HEIGHT / 2};
+    Punkt p{WINDOW_WIDTH / 2, -12000, WINDOW_HEIGHT / 2};
     std::cout << p;
 
     Kamera cam{KAMERA_1_FOV, A_RATIO, p};
 
     std::cout << cam;
 
-    Figur kube("./figurer/kube.obj", Punkt{WINDOW_WIDTH / 2, 5000, WINDOW_HEIGHT / 2});
-    Figur kube2("./figurer/kube.obj", Punkt{800, 500, 400});
-    Kule kule("./figurer/kube.obj", Punkt{500, 500, 700});
+    CelestialKropp Tellus{ORIGO, 6370};
+    CelestialKropp Solen{{150 * pow(10, 6), 0, 0}, 696000};
 
+    Tellus.dobleTrekanter(6);
+    Solen.dobleTrekanter(5);
 
-    std::vector<Figur*> alleFigurer = {&kule, &kube}; //&kube, &kube2,
+    Tellus.Spherifiser(6370);
+    Solen.Spherifiser(696000);
 
-    kube2.setSpin(degToRad(1), enhetsVektor[2]);
+    Tellus.mapBildeTilKule(jordKart);
+    Solen.mapBildeTilKule(solKart);
 
-    kube2.dobleTrekanter(3);
-    kube.dobleTrekanter(1);
+    Tellus.setSpin(degToRad(1), {0, 0, 1});
+    Solen.setSpin(degToRad(0.2), {0, 0, 1});
 
-    kule.dobleTrekanter(6);
-    kule.Spherifiser(500);
-
-    kule.setSpin(degToRad(1), enhetsVektor[2]);
-
-    kule.mapBildeTilKule(jordKart);
-
-    kule.brettUt(800, 450);
-
+    std::vector<Figur*> alleFigurer = {&Tellus, &Solen}; //&kube, &kube2,
 
     std::vector<TDT4102::Point> stjerner;
 
@@ -76,10 +71,6 @@ int main(){
         int antallTrekanter = tegn3DFigur(&window, cam, alleFigurer);
 
         sjekkKeyPressed(cam, window);
-
-        if (tegnKart){
-            antallTrekanter += tegn2DFigur(&window, cam, kule.getUVKoordinater());
-        }
 
         auto end = std::chrono::high_resolution_clock::now();
         long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

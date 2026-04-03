@@ -67,29 +67,31 @@ class Kule : public Figur
 {   
     int radius = 100;
 
-    std::vector<float> UV_koordinater;
-
-    std::vector<std::array<double, 2>> KartesiskTilSpherisk();
-
     public:
-    Kule(std::string filnavn, Punkt inSentrum) : Figur(filnavn, inSentrum) {};
+    Kule(Punkt inSentrum, int inRadius) : Figur("figurer/kube.obj", inSentrum), radius(inRadius) {};
 
     void Spherifiser(int inRadius);
-    void brettUt(int bredde, int hoyde);
-    void mapBildeTilKule(char* filbane);
-    const std::vector<float>& getUVKoordinater() const;
+
+    int getRadius() const;
 };
 
-class CelestialKropp : Kule{
-
+class CelestialKropp : public Kule
+{
 
     int masse;
     int fart;
-    
 
+    std::vector<float> UV_koordinater;
+
+    std::vector<std::array<double, 2>> KartesiskTilSpherisk();
+    
     public:
 
-    CelestialKropp(std::string filnavn, Punkt inSentrum) : Kule(filnavn, inSentrum){};
+    CelestialKropp(Punkt inSentrum, int radius) : Kule(inSentrum, radius){};
+
+    void mapBildeTilKule(char* filbane);
+    void brettUt(int bredde, int hoyde);
+    const std::vector<float>& getUVKoordinater() const;
 
 };
 std::vector<float> sorter2Dplan(const std::vector<float>& toDplan);

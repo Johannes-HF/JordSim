@@ -133,14 +133,12 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
                 const Punkt* p = hjorner[k];
 
-                if (dybde[k] <= 0){ continue;}
-
-                float xp = (hoyreK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
-                float zp = -(oppK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
+                float xp = (hoyreK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_WIDTH / 2;
+                float zp = -(oppK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_HEIGHT / 2;
 
                 toDplan.push_back(xp);
                 toDplan.push_back(zp);
-                toDplan.push_back(p->y - this->pos.y);
+                toDplan.push_back(dybde[k]);
                 
             }
             TDT4102::Color c = farger.at(j / 3);

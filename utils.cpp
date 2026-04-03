@@ -87,43 +87,20 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
     bool upKeyIsPressed = window.is_key_down(KeyboardKey::UP);
     bool downKeyIsPressed = window.is_key_down(KeyboardKey::DOWN);
 
-    double rotasjonsFart = degToRad(1);
-    
-    if(dKeyIsPressed) {
-        Punkt camPos = cam.getPos();
-        camPos.x += skrittLengde;
-        cam.endrePos(camPos);
-    };
-    if(aKeyIsPressed) {
-        Punkt camPos = cam.getPos();
-        camPos.x -= skrittLengde;
-        cam.endrePos(camPos);
-    };
-    if(wKeyIsPressed) {
-        Punkt camPos = cam.getPos();
-        camPos.y += skrittLengde;
-        cam.endrePos(camPos);
-    };
-    if(sKeyIsPressed) {
-        Punkt camPos = cam.getPos();
-        camPos.y -= skrittLengde;
-        cam.endrePos(camPos);
-    };
-    if(lShiftKeyIsPressed) {
-        Punkt camPos = cam.getPos();
-        camPos.z -= skrittLengde;
-        cam.endrePos(camPos);
-    }
-    if (spaceKeyIsPressed){
-        Punkt camPos = cam.getPos();
-        camPos.z += skrittLengde;
-        cam.endrePos(camPos);
-    };
- if (rKeyIsPressed){
-        Punkt camPos = cam.getPos();
-        camPos.z += skrittLengde;
-        cam.endrePos(camPos);
-    };
+    Punkt frem = cam.getRetning();
+    Punkt hoyre = frem ^ Punkt{0, 0, 1};
+
+    Punkt camPos = cam.getPos();
+
+    if(wKeyIsPressed)       camPos = camPos + frem  * skrittLengde;
+    if(sKeyIsPressed)       camPos = camPos - frem  * skrittLengde;
+    if(dKeyIsPressed)       camPos = camPos + hoyre * skrittLengde;
+    if(aKeyIsPressed)       camPos = camPos - hoyre * skrittLengde;
+    if(spaceKeyIsPressed)   camPos.z += skrittLengde;
+    if(lShiftKeyIsPressed)  camPos.z -= skrittLengde;
+
+    cam.endrePos(camPos);
+
     if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart);
     if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart);
     if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart);
@@ -131,6 +108,7 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
 }
 
 int getFPS(long long løkkeTidMS){
+    if (løkkeTidMS == 0) {return 0;};
     return static_cast<int>(1000 / løkkeTidMS);
 };
 

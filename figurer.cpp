@@ -214,7 +214,7 @@ std::vector<float> sorter2Dplan(const std::vector<float>& toDplan){
     return nyToDplan;
 }
 
-const std::vector<float>& Kule::getUVKoordinater() const {return UV_koordinater;};
+const std::vector<float>& CelestialKropp::getUVKoordinater() const {return UV_koordinater;};
 
 void Kule::Spherifiser(int inRadius){
     for (int i = 0; i < this->punkter.size(); i++){
@@ -224,11 +224,15 @@ void Kule::Spherifiser(int inRadius){
     }
 };
 
-std::vector<std::array<double, 2>> Kule::KartesiskTilSpherisk(){
+int Kule::getRadius() const{
+    return this->radius;
+};
+
+std::vector<std::array<double, 2>> CelestialKropp::KartesiskTilSpherisk(){
     std::vector<std::array<double, 2>> spheriskKoordinat(this->punkter.size());
     int i = 0;
     for (Punkt p : this->punkter){
-        double bredde = asin(p.z/this->radius); // Phi
+        double bredde = asin(p.z/this->getRadius()); // Phi
         double lengde = atan2(p.x , p.y); // lambda
 
         spheriskKoordinat.at(i) = {bredde, lengde};
@@ -238,7 +242,7 @@ std::vector<std::array<double, 2>> Kule::KartesiskTilSpherisk(){
     return spheriskKoordinat;
 };
 
-void Kule::brettUt(int bredde, int hoyde){
+void CelestialKropp::brettUt(int bredde, int hoyde){
     std::vector<std::array<double, 2>> spheriskKoordinat = KartesiskTilSpherisk(); // [phi, lambda]
 
     this->UV_koordinater.clear();
@@ -268,7 +272,7 @@ void Kule::brettUt(int bredde, int hoyde){
     }
 }
 
-void Kule::mapBildeTilKule(char* filbane){
+void CelestialKropp::mapBildeTilKule(char* filbane){
     int w, h;
     std::vector<TDT4102::Color>* pixelFarger = lesBilde(filbane, w, h);
     std::vector<std::array<double, 2>> spherisk = KartesiskTilSpherisk();
