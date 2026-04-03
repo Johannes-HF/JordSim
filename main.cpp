@@ -28,17 +28,7 @@ int main(){
     CelestialKropp Tellus{ORIGO, 6370};
     CelestialKropp Solen{{150 * pow(10, 6), 0, 0}, 696000};
 
-    Tellus.dobleTrekanter(6);
-    Solen.dobleTrekanter(5);
-
-    Tellus.Spherifiser(6370);
-    Solen.Spherifiser(696000);
-
-    Tellus.mapBildeTilKule(jordKart);
-    Solen.mapBildeTilKule(solKart);
-
-    Tellus.setSpin(degToRad(1), {0, 0, 1});
-    Solen.setSpin(degToRad(0.2), {0, 0, 1});
+    himmelLegemeInit(Tellus, Solen);
 
     std::vector<Figur*> alleFigurer = {&Tellus, &Solen}; //&kube, &kube2,
 

@@ -134,3 +134,18 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
 
 };
 
+void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
+
+
+    Tellus.dobleTrekanter(6);
+    Solen.dobleTrekanter(5);
+
+    Tellus.Spherifiser(6370);
+    Solen.Spherifiser(696000);
+
+    Tellus.mapBildeTilKule(jordKart);
+    Solen.mapBildeTilKule(solKart);
+
+    Tellus.setSpin(degToRad(1), {0, 0, 1});
+    Solen.setSpin(degToRad(0.2), {0, 0, 1});
+};

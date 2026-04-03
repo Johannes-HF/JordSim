@@ -19,3 +19,6 @@ int getFPS(long long løkkeTidMs);
 
 void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTrekanter);
 
+void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen);
+
+
