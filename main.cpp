@@ -73,28 +73,21 @@ int main(){
 
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
-        tegn3DFigur(&window, cam, alleFigurer); 
+        int antallTrekanter = tegn3DFigur(&window, cam, alleFigurer);
 
         sjekkKeyPressed(cam, window);
 
         if (tegnKart){
-
-        tegn2DFigur(&window, cam, kule.getUVKoordinater());
+            antallTrekanter += tegn2DFigur(&window, cam, kule.getUVKoordinater());
         }
 
         auto end = std::chrono::high_resolution_clock::now();
         long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-        int antallTrekanter = 0;
-
         if (debug){
-            
-            for (Figur* fig : alleFigurer){
-                antallTrekanter += fig->getIndexer().size() / 3;
-            }
             int FPS = getFPS(ms);
-            
-            debugInfo(cam, window, FPS, antallTrekanter);    
+
+            debugInfo(cam, window, FPS, antallTrekanter);
         }
 
         start = std::chrono::high_resolution_clock::now();

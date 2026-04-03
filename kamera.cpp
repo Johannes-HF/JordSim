@@ -36,9 +36,30 @@ const array<double, 2>& Kamera::getFov() const {return fov;}
 const array<double, 2>& Kamera::getAspect() const {return aspectRatio;};
 const Punkt& Kamera::getRetning() const {return retning;};
 
-void Kamera::roterKamera(Punkt omega){
-    Punkt nyRetning = omega + this->retning;
-    this->retning =  nyRetning / sqrt(nyRetning * nyRetning);
+void Kamera::roterYaw(double theta){
+    double x = retning.x;
+    double y = retning.y;
+    retning.x = x * cos(theta) - y * sin(theta);
+    retning.y = x * sin(theta) + y * cos(theta);
+};
+
+void Kamera::roterPitch(double theta){
+    Punkt opp{0, 0, 1};
+    Punkt hoyre = retning ^ opp;
+
+    double len = sqrt(hoyre * hoyre);
+    if (len < 1e-6) return;
+    hoyre = hoyre / len;
+
+    // Rodrigues: v' = v*cos(θ) + (k × v)*sin(θ) + k*(k·v)*(1-cos(θ))
+    Punkt kryssprodukt = hoyre ^ retning;
+    float kdotv = hoyre * retning;
+
+    retning.x = retning.x * cos(theta) + kryssprodukt.x * sin(theta) + hoyre.x * kdotv * (1 - cos(theta));
+    retning.y = retning.y * cos(theta) + kryssprodukt.y * sin(theta) + hoyre.y * kdotv * (1 - cos(theta));
+    retning.z = retning.z * cos(theta) + kryssprodukt.z * sin(theta) + hoyre.z * kdotv * (1 - cos(theta));
+
+    retning = retning / sqrt(retning * retning);
 };
 
 
@@ -73,16 +94,25 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             const Punkt& B =  punkter.at(indexer.at(j+1));
             const Punkt& C =  punkter.at(indexer.at(j+2));
 
-            const Punkt absA = A + sentrum;
-            const Punkt absB = B + sentrum;
-            const Punkt absC = C + sentrum;
+            const Punkt relA = A + sentrum - this->pos;
+            const Punkt relB = B + sentrum - this->pos;
+            const Punkt relC = C + sentrum - this->pos;
 
-            double dA = absA.y - this->pos.y;
-            double dB = absB.y - this->pos.y;
-            double dC = absC.y - this->pos.y;
+            Punkt fremover = this->retning;
 
-            if (dA <= NEAR || dB <= NEAR || dC <= NEAR ||
-                dA >= FAR  || dB >= FAR  || dC >= FAR) {
+            Punkt hoyre = fremover ^ Punkt{0, 0, 1};
+            Punkt opp = hoyre ^ fremover;
+
+            std::array<float, 3> dybde = {relA * fremover,
+                                        relB * fremover,
+                                        relC * fremover};
+            std::array<float, 3> hoyreK = {relA * hoyre, relB * hoyre, relC * hoyre};
+
+            std::array<float, 3> oppK = {relA * opp, relB * opp, relC * opp};
+
+            
+            if (dybde[0] <= NEAR || dybde[1] <= NEAR || dybde[2] <= NEAR ||
+                dybde[0] >= FAR  || dybde[1] >= FAR  || dybde[2] >= FAR) {
                 continue;
 }
 
@@ -93,23 +123,21 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
             Punkt NormalVektor = u ^ v;
 
-            Punkt viewDir = absA - this->pos; // Vector from camera to absolute vertex
-            
-            if (NormalVektor.x * viewDir.x + NormalVektor.y * viewDir.y + NormalVektor.z * viewDir.z >= 0){
+            if (NormalVektor * this->retning >= 0){
                 continue;
             }
 
-            const Punkt* hjorner[3] = {&absA, &absB, &absC};
+            const Punkt* hjorner[3] = {&relA, &relB, &relC};
 
             for (int k = 0; k < 3; k++){
 
                 const Punkt* p = hjorner[k];
 
-                float xp = (p->x - this->pos.x) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
-                float zp = -(p->z - this->pos.z) * FOCAL / (p->y - this->pos.y) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
+                if (dybde[k] <= 0){ continue;}
 
-                if (p->y - this->pos.y <= 0){ continue;}
-               
+                float xp = (hoyreK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_WIDTH / 2;// std::cos(Kamera::fov[1])) / (p->y); 
+                float zp = -(oppK[k]) * FOCAL / (dybde[k]) * aRatio + WINDOW_HEIGHT / 2; //std::cos(fov[0])) / (p->y);
+
                 toDplan.push_back(xp);
                 toDplan.push_back(zp);
                 toDplan.push_back(p->y - this->pos.y);

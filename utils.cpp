@@ -81,8 +81,13 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
     bool sKeyIsPressed = window.is_key_down(KeyboardKey::S);
     bool spaceKeyIsPressed = window.is_key_down(KeyboardKey::SPACE);
     bool lShiftKeyIsPressed = window.is_key_down(KeyboardKey::LEFT_SHIFT);
+    bool rKeyIsPressed = window.is_key_down(KeyboardKey::R);
+    bool leftKeyIsPressed = window.is_key_down(KeyboardKey::LEFT);
+    bool rightKeyIsPressed = window.is_key_down(KeyboardKey::RIGHT);
+    bool upKeyIsPressed = window.is_key_down(KeyboardKey::UP);
+    bool downKeyIsPressed = window.is_key_down(KeyboardKey::DOWN);
 
-    int skrittLengde = 5;
+    double rotasjonsFart = degToRad(1);
     
     if(dKeyIsPressed) {
         Punkt camPos = cam.getPos();
@@ -114,6 +119,15 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
         camPos.z += skrittLengde;
         cam.endrePos(camPos);
     };
+ if (rKeyIsPressed){
+        Punkt camPos = cam.getPos();
+        camPos.z += skrittLengde;
+        cam.endrePos(camPos);
+    };
+    if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart);
+    if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart);
+    if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart);
+    if (downKeyIsPressed)  cam.roterPitch(-rotasjonsFart);
 }
 
 int getFPS(long long løkkeTidMS){

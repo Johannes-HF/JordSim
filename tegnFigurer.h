@@ -5,5 +5,5 @@
 #include "kamera.h"
 
 
-void tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<float>& figurer);
-void tegn3DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<Figur*>& figurer);
+int tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<float>& figurer);
+int tegn3DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<Figur*>& figurer);

@@ -25,7 +25,8 @@ class Kamera{
         friend std::ostream& operator<<(std::ostream& os, const Kamera& cam);
     
         std::vector<float> projiser(std::vector<Figur*> figurer);
-        void roterKamera(Punkt omega);
+        void roterYaw(double theta);
+        void roterPitch(double theta);
 
 };
 

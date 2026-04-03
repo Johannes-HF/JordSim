@@ -6,7 +6,7 @@
 #include "utils.h"
 
 
-void  tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<float>& figurer){
+int tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<float>& figurer){
 
     std::vector<TDT4102::Color> farger {TDT4102::Color::green, TDT4102::Color::hot_pink, TDT4102::Color::royal_blue, TDT4102::Color::dark_orange};
     int fargeI = 0;
@@ -46,14 +46,15 @@ void  tegn2DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vect
         
         fargeI ++;
     }
+    return static_cast<int>(toDplan.size()) / 9;
 }
 
 
-void tegn3DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<Figur*>& figurer){
+int tegn3DFigur(TDT4102::AnimationWindow* window, Kamera& cam, const std::vector<Figur*>& figurer){
 
     std::vector<float> usortertToDplan = cam.projiser(figurer);
 
-    tegn2DFigur(window, cam, usortertToDplan);
+    return tegn2DFigur(window, cam, usortertToDplan);
     //printTrekantKoordinater(usortertToDplan, figurer.size());
 
 };

@@ -16,13 +16,16 @@ constexpr int FAR = 10000;
 constexpr float KAMERA_1_FOV = 30.0;
 constexpr double A_RATIO[2] = {16, 9};
 const double FOCAL = (WINDOW_HEIGHT / 2) / std::tan(degToRad(KAMERA_1_FOV));
+constexpr int skrittLengde = 10;
+
 
 //Figur
 constexpr bool gradient = false;
 constexpr bool kontur = false;
 //Bilder
 
-constexpr char* jordKart = "bilder/verden.png";
+constexpr char* jordKart = "bilder/verden5k.jpg";
+constexpr char* solKart = "bilder/sol1k.jpg";
 constexpr bool tegnKart = false;
 constexpr bool debug = true;
 
