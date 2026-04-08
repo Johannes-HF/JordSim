@@ -145,11 +145,11 @@ void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
     Tellus.mapBildeTilKule(jordKart);
     Solen.mapBildeTilKule(solKart);
 
-    Tellus.setSpin(degToRad(1), {0, 0, 1});
+    //Tellus.setSpin(degToRad(1), {0, 0, 1});
     Solen.setSpin(degToRad(0.2), {0, 0, 1});
 };
 
-void lesFlydata(string flyFil, std::vector<Fly>& alleFly){
+void lesFlydata(std::string flyFil, std::vector<Fly>& alleFly){
 
     try {
         ifstream fil(flyFil);
@@ -180,7 +180,7 @@ void lesFlydata(string flyFil, std::vector<Fly>& alleFly){
         int antallFly = 0;
         while (i < filStreng.size()){
             
-            if (filStreng.at(i) == "["){
+            if (filStreng.at(i) == "[" and filStreng.at(i+9) == "false"){
                 antallFly++;
                 int feilOffset = 0;
 
@@ -200,6 +200,8 @@ void lesFlydata(string flyFil, std::vector<Fly>& alleFly){
                     feilOffset = 10; float fart = (filStreng.at(i+10) == "null") ? 0 : std::stof(filStreng.at(i+10));
                     feilOffset = 11; float retning = (filStreng.at(i+11) == "null") ? 0 : std::stof(filStreng.at(i+11));
                     feilOffset = 12; float vertikalFart = (filStreng.at(i+12) == "null") ? 0 : std::stof(filStreng.at(i+12));
+
+                    
 
                     Fly fly{
                         icao24,

@@ -22,5 +22,5 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
 
 void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen);
 
-void lesFlydata(string flyFil, std::vector<Fly>& alleFly);
+void lesFlydata(std::string flyFil, std::vector<Fly>& alleFly);
 

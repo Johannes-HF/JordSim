@@ -13,12 +13,11 @@
 
 int main(){
 
-    std::string flydata = "flydata/flyData.txt";
-    std::vector<Fly> alleFly;
-    lesFlydata(flydata, alleFly);
-    return 0;
-}
-int null(){
+    std::string flydataFil = "flydata/flyData.txt";
+    std::vector<Fly> alleFly = {};
+    lesFlydata(flydataFil, alleFly);
+
+    std::cout << "Antall flyvende fly: " << alleFly.size() << std::endl;
 
     int jordW;
     int jordH;
@@ -38,7 +37,13 @@ int null(){
 
     himmelLegemeInit(Tellus, Solen);
 
-    std::vector<Figur*> alleFigurer = {&Tellus, &Solen}; //&kube, &kube2,
+    std::vector<Figur*> alleFigurer{};// {&Tellus, &Solen} //&kube, &kube2,
+
+    for (Fly& f : alleFly){
+        alleFigurer.push_back(&f);
+    }
+    alleFigurer.push_back(&Tellus);
+    alleFigurer.push_back(&Solen);
 
     std::vector<TDT4102::Point> stjerner;
 
@@ -63,6 +68,14 @@ int null(){
         window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
         int antallTrekanter = tegn3DFigur(&window, cam, alleFigurer);
+
+        for (int i = 0; i < alleFigurer.size(); i++){
+            Figur* fig = alleFigurer.at(i);
+
+            if (dynamic_cast<Fly*>(fig)) {
+                dynamic_cast<Fly*>(fig)->flyFremmover();
+            }
+        }
 
         sjekkKeyPressed(cam, window);
 

@@ -33,11 +33,11 @@ class Figur
     std::vector<TDT4102::Color> farger;
     double omega; //Rotasjonshastighet
     Punkt rotAkse; //rotasjonsakse
+    Punkt sentrum;
 
     public:
-    Figur(std::string filnavn, Punkt inSentrum);
+    Figur(std::string filnavn = "", Punkt inSentrum = Punkt{});
 
-    Punkt sentrum;
 
     const std::vector<Punkt>& getPunkter() const ;
     const std::vector<int>& getIndexer() const ;
@@ -53,6 +53,7 @@ class Figur
     void dobleTrekanter(int antallDupliseringer);
     void roterFigur();
 
+    virtual ~Figur() {};
 };
 
 class Kube : public Figur

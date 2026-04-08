@@ -22,6 +22,7 @@ exe = executable(
   'program',
   src,
 'figurer.cpp',
+'fly.cpp',
 'kamera.cpp',
 'lesBilder.cpp',
 'main.cpp',

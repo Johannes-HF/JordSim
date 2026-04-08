@@ -23,6 +23,7 @@ const double rotasjonsFart = degToRad(5);
 //Figur
 constexpr bool gradient = false;
 constexpr bool kontur = false;
+constexpr int FLY_SIZE = 100;
 
 //Bilder
 

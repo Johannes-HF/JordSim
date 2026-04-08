@@ -49,41 +49,43 @@ Punkt operator^(const Punkt& LHS, const Punkt& RHS){
 }
 
 Figur::Figur(std::string filnavn, Punkt inSentrum){
-    sentrum = inSentrum;
-    sentrum.y += FOCAL;
-    omega = 0;
+    if (filnavn != ""){
+        sentrum = inSentrum;
+        //sentrum.y += FOCAL;
+        omega = 0;
 
+        ifstream fil(filnavn);
+        std::string linje;
 
-    ifstream fil(filnavn);
-    std::string linje;
+        while(std::getline(fil, linje)){
+            std::istringstream iss(linje);
+            
+            char identifier = '\0';
 
-    while(std::getline(fil, linje)){
-        std::istringstream iss(linje);
+            iss >> identifier; 
+
+            if (identifier == 'v'){
+                float x, y, z;
+                iss >> x >> y >> z;
+
+                punkter.push_back(Punkt(x, y, z));
+            }
+            else if(identifier == 'f'){
+                int x, y, z;
+                iss >> x >> y >> z;
+                indexer.push_back(x-1);
+                indexer.push_back(y-1);
+                indexer.push_back(z-1);
+            }
+            else if (identifier == 'c'){
+                int r, g, b;
+                iss >> r >> g >> b;
+                farger.push_back(TDT4102::Color(r, g, b));
+            }
+        }
         
-        char identifier = '\0';
-
-        iss >> identifier; 
-
-        if (identifier == 'v'){
-            float x, y, z;
-            iss >> x >> y >> z;
-
-            punkter.push_back(Punkt(x, y, z));
-        }
-        else if(identifier == 'f'){
-            int x, y, z;
-            iss >> x >> y >> z;
-            indexer.push_back(x-1);
-            indexer.push_back(y-1);
-            indexer.push_back(z-1);
-
-        }
-        else if (identifier == 'c'){
-            int r, g, b;
-            iss >> r >> g >> b;
-            farger.push_back(TDT4102::Color(r, g, b));
-        }
     }
+    
 }
 
 const std::vector<Punkt>& Figur::getPunkter() const { return punkter;};
