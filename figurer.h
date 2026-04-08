@@ -44,8 +44,8 @@ class Figur
     const std::vector<Punkt>& getRetning() const ;
     const std::vector<TDT4102::Color>& getFarger() const ;
     const Punkt& getSentrum() const ;
-    const double getOmega() const ;
-    const double getSpin() const ;
+    double getOmega() const ;
+    double getSpin() const ;
 
     void endreSentrum(Punkt& nyttSentrum);
     void sorterEtterDybde();
@@ -89,7 +89,7 @@ class CelestialKropp : public Kule
 
     CelestialKropp(Punkt inSentrum, int radius) : Kule(inSentrum, radius){};
 
-    void mapBildeTilKule(char* filbane);
+    void mapBildeTilKule(const char* filbane);
     void brettUt(int bredde, int hoyde);
     const std::vector<float>& getUVKoordinater() const;
 

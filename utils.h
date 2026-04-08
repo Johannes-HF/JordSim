@@ -2,6 +2,7 @@
 #include "std_lib_facilities.h"
 #include "figurer.h"
 #include "kamera.h"
+#include "fly.h"
 
 int randomInt(int low, int high);
 double degToRad(double deg);
@@ -21,4 +22,5 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
 
 void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen);
 
+void lesFlydata(string flyFil, std::vector<Fly>& alleFly);
 

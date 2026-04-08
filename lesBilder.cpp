@@ -16,7 +16,7 @@ TDT4102::Color getPixelColor(SDL_Surface* surf, int bredde, int hoyde){
 
 };
 
-std::vector<TDT4102::Color>* lesBilde(char* filbane, int& w, int& h){
+std::vector<TDT4102::Color>* lesBilde(const char* filbane, int& w, int& h){
 
     SDL_Surface* surf = IMG_Load(filbane);
 

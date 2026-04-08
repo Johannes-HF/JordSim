@@ -63,7 +63,7 @@ void Kamera::roterPitch(double theta){
 };
 
 
-
+//Burde separere bevegelse og projisering
 std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
 
     std::vector<float> toDplan;
@@ -83,8 +83,6 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
         if (fig->getSpin() != 0){
             fig->roterFigur();
         }
-
-        //sorterEtterDybde();
 
         int antallFarger = fig->getFarger().size();
 
@@ -106,6 +104,7 @@ std::vector<float> Kamera::projiser(std::vector<Figur*> figurer){
             std::array<float, 3> dybde = {relA * fremover,
                                         relB * fremover,
                                         relC * fremover};
+                                        
             std::array<float, 3> hoyreK = {relA * hoyre, relB * hoyre, relC * hoyre};
 
             std::array<float, 3> oppK = {relA * opp, relB * opp, relC * opp};

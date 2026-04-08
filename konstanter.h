@@ -13,7 +13,7 @@ constexpr std::string WINDOW_TITLE = "JordSim";
 
 //Kamera
 constexpr int NEAR = 1;
-constexpr int FAR = 1000000000;
+constexpr int FAR = 10000000;
 constexpr float KAMERA_1_FOV = 30.0;
 constexpr double A_RATIO[2] = {16, 9};
 const double FOCAL = (WINDOW_HEIGHT / 2) / std::tan(degToRad(KAMERA_1_FOV));
@@ -26,11 +26,14 @@ constexpr bool kontur = false;
 
 //Bilder
 
-constexpr char* jordKart = "bilder/verden5k.jpg";
-constexpr char* solKart = "bilder/sol1k.jpg";
+constexpr const char* jordKart = "bilder/verden5k.jpg";
+constexpr const char* solKart = "bilder/sol1k.jpg";
 constexpr bool tegnKart = false;
 constexpr bool debug = true;
 
 //Verden
 const Punkt ORIGO{0, 0, 0};
+constexpr int JORD_RADIUS = 6371; //km
+constexpr int SOL_RADIUS = 696000; //km
+
 

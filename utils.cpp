@@ -4,6 +4,7 @@
 #include "figurer.h"
 #include "konstanter.h"
 #include <chrono>
+#include <iostream>
 
 int randomInt(int low, int high){
     random_device rd;
@@ -131,17 +132,15 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
     window.draw_text({20, WINDOW_HEIGHT - 80}, koords, TDT4102::Color::white, 30);
     window.draw_text({20, WINDOW_HEIGHT - 50}, fpsString, TDT4102::Color::white, 30);
     window.draw_text({static_cast<int>(fpsString.size() * 15 + 20), WINDOW_HEIGHT - 50}, antallTrekanerString, TDT4102::Color::white, 30);
-
 };
 
 void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
 
-
     Tellus.dobleTrekanter(6);
     Solen.dobleTrekanter(5);
 
-    Tellus.Spherifiser(6370);
-    Solen.Spherifiser(696000);
+    Tellus.Spherifiser(JORD_RADIUS);
+    Solen.Spherifiser(SOL_RADIUS);
 
     Tellus.mapBildeTilKule(jordKart);
     Solen.mapBildeTilKule(solKart);
@@ -149,3 +148,85 @@ void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
     Tellus.setSpin(degToRad(1), {0, 0, 1});
     Solen.setSpin(degToRad(0.2), {0, 0, 1});
 };
+
+void lesFlydata(string flyFil, std::vector<Fly>& alleFly){
+
+    try {
+        ifstream fil(flyFil);
+        if (!fil.is_open()) {
+            throw std::runtime_error("Kunne ikke åpne filen: " + flyFil);
+        }
+
+        std::string linje;
+        std::vector<std::string> filStreng;
+        
+        while (std::getline(fil, linje)){
+
+            std::string stripLinje = "";
+            bool forsteChar = false;
+            for (char b : linje){
+                if (b != ' '){
+                    forsteChar = true;
+                }
+                if ( forsteChar && b != '\t' && b != ',' && b != '"'){
+                    stripLinje += b;
+                };
+            }
+
+            filStreng.push_back(stripLinje);
+            //std::cout << stripLinje << std::endl;
+        }
+        int i = 3;
+        int antallFly = 0;
+        while (i < filStreng.size()){
+            
+            if (filStreng.at(i) == "["){
+                antallFly++;
+                int feilOffset = 0;
+
+                //std::cout << "FlyNr: " << antallFly << std::endl;
+                try {
+
+
+                    feilOffset = 1; std::string icao24 = filStreng.at(i+1);
+                    feilOffset = 2; std::string kalleNavn = filStreng.at(i+2);
+                    feilOffset = 3; std::string landOpprinnelse = filStreng.at(i+3);
+                    feilOffset = 4; int posisjon_tid = (filStreng.at(i+4) == "null") ? 0 : std::stoi(filStreng.at(i+4));
+                    feilOffset = 5; int nullTid = (filStreng.at(i+5) == "null") ? 0 : std::stoi(filStreng.at(i+5));
+                    feilOffset = 6; float lengdeGrad = (filStreng.at(i+6) == "null") ? 0 : std::stof(filStreng.at(i+6));
+                    feilOffset = 7; float breddeGrad = (filStreng.at(i+7) == "null") ? 0 : std::stof(filStreng.at(i+7));
+                    feilOffset = 8; float baroHoyde = (filStreng.at(i+8) == "null") ? 0 : std::stof(filStreng.at(i+8));
+                    feilOffset = 9; bool onGround = (filStreng.at(i+9) == "false") ? 0 : 1;
+                    feilOffset = 10; float fart = (filStreng.at(i+10) == "null") ? 0 : std::stof(filStreng.at(i+10));
+                    feilOffset = 11; float retning = (filStreng.at(i+11) == "null") ? 0 : std::stof(filStreng.at(i+11));
+                    feilOffset = 12; float vertikalFart = (filStreng.at(i+12) == "null") ? 0 : std::stof(filStreng.at(i+12));
+
+                    Fly fly{
+                        icao24,
+                        kalleNavn,
+                        landOpprinnelse,
+                        posisjon_tid,
+                        nullTid,
+                        lengdeGrad,
+                        breddeGrad,
+                        baroHoyde,
+                        onGround,
+                        fart,
+                        retning,
+                        vertikalFart
+                        };
+
+                    alleFly.push_back(fly);
+                } catch (const std::exception& e){
+                    std::cerr << "FEIL i innlesing av flyNr " << antallFly << ", i linje " << feilOffset << ":\n" << e.what() << ", " << filStreng.at(i+feilOffset) << std::endl;
+                } 
+                i += 13;
+            }  
+            i ++;
+        } 
+
+    } catch (const std::exception& e) {
+        std::cerr << "FEIL i lesFlydata: " << e.what() << std::endl;
+    }
+    
+}

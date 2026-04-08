@@ -90,7 +90,7 @@ const std::vector<Punkt>& Figur::getPunkter() const { return punkter;};
 const std::vector<int>& Figur::getIndexer() const { return indexer;};
 const std::vector<TDT4102::Color>& Figur::getFarger() const { return farger;};
 const Punkt& Figur::getSentrum() const { return sentrum;};
-const double Figur::getSpin() const { return omega;};
+double Figur::getSpin() const { return omega;};
 
 void Figur::setSpin(double alfa, Punkt nyRotAkse){
     omega = alfa;
@@ -272,7 +272,7 @@ void CelestialKropp::brettUt(int bredde, int hoyde){
     }
 }
 
-void CelestialKropp::mapBildeTilKule(char* filbane){
+void CelestialKropp::mapBildeTilKule(const char* filbane){
     int w, h;
     std::vector<TDT4102::Color>* pixelFarger = lesBilde(filbane, w, h);
     std::vector<std::array<double, 2>> spherisk = KartesiskTilSpherisk();

@@ -9,8 +9,16 @@
 #include "lesBilder.h"
 #include <cmath>
 #include <chrono>
+#include "fly.h"
 
 int main(){
+
+    std::string flydata = "flydata/flyData.txt";
+    std::vector<Fly> alleFly;
+    lesFlydata(flydata, alleFly);
+    return 0;
+}
+int null(){
 
     int jordW;
     int jordH;
@@ -25,8 +33,8 @@ int main(){
 
     std::cout << cam;
 
-    CelestialKropp Tellus{ORIGO, 6370};
-    CelestialKropp Solen{{150 * pow(10, 6), 0, 0}, 696000};
+    CelestialKropp Tellus{ORIGO, JORD_RADIUS};
+    CelestialKropp Solen{{150 * pow(10, 4), 0, 0}, SOL_RADIUS};
 
     himmelLegemeInit(Tellus, Solen);
 
@@ -40,11 +48,7 @@ int main(){
         );
     }
 
-    int rotasjon = 0;
-    bool baklengs = 0;
-
     auto start = std::chrono::high_resolution_clock::now();
-
 
     while(!window.should_close()) {
 
