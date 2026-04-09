@@ -235,7 +235,7 @@ std::vector<std::array<double, 2>> CelestialKropp::KartesiskTilSpherisk(){
     int i = 0;
     for (Punkt p : this->punkter){
         double bredde = asin(p.z/this->getRadius()); // Phi
-        double lengde = atan2(p.x , p.y); // lambda
+        double lengde = atan2(-p.y , p.x); // lambda
 
         spheriskKoordinat.at(i) = {bredde, lengde};
 

@@ -74,7 +74,7 @@ void tegnKontur (AnimationWindow* window, TDT4102::Point p1, TDT4102::Point p2, 
 
 }
 
-void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
+void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt){
 
     bool dKeyIsPressed = window.is_key_down(KeyboardKey::D);
     bool aKeyIsPressed = window.is_key_down(KeyboardKey::A);
@@ -93,19 +93,19 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window){
 
     Punkt camPos = cam.getPos();
 
-    if(wKeyIsPressed)       camPos = camPos + frem  * skrittLengde;
-    if(sKeyIsPressed)       camPos = camPos - frem  * skrittLengde;
-    if(dKeyIsPressed)       camPos = camPos + hoyre * skrittLengde;
-    if(aKeyIsPressed)       camPos = camPos - hoyre * skrittLengde;
-    if(spaceKeyIsPressed)   camPos.z += skrittLengde;
-    if(lShiftKeyIsPressed)  camPos.z -= skrittLengde;
+    if(wKeyIsPressed)       camPos = camPos + frem  * skrittLengde * dt;
+    if(sKeyIsPressed)       camPos = camPos - frem  * skrittLengde * dt;
+    if(dKeyIsPressed)       camPos = camPos + hoyre * skrittLengde * dt;
+    if(aKeyIsPressed)       camPos = camPos - hoyre * skrittLengde * dt;
+    if(spaceKeyIsPressed)   camPos.z += skrittLengde * dt;
+    if(lShiftKeyIsPressed)  camPos.z -= skrittLengde * dt;
 
     cam.endrePos(camPos);
 
-    if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart);
-    if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart);
-    if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart);
-    if (downKeyIsPressed)  cam.roterPitch(-rotasjonsFart);
+    if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart * dt);
+    if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart * dt);
+    if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart * dt);
+    if (downKeyIsPressed)  cam.roterPitch(-rotasjonsFart * dt);
 }
 
 int getFPS(long long løkkeTidMS){
@@ -136,8 +136,8 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
 
 void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
 
-    Tellus.dobleTrekanter(6);
-    Solen.dobleTrekanter(5);
+    Tellus.dobleTrekanter(5);
+    Solen.dobleTrekanter(4);
 
     Tellus.Spherifiser(JORD_RADIUS);
     Solen.Spherifiser(SOL_RADIUS);
@@ -145,7 +145,7 @@ void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
     Tellus.mapBildeTilKule(jordKart);
     Solen.mapBildeTilKule(solKart);
 
-    //Tellus.setSpin(degToRad(1), {0, 0, 1});
+    Tellus.setSpin(degToRad(JORD_ROT_HAST), {0, 0, 1});
     Solen.setSpin(degToRad(0.2), {0, 0, 1});
 };
 

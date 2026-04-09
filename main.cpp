@@ -13,6 +13,8 @@
 
 int main(){
 
+    long long ms = 0;
+
     std::string flydataFil = "flydata/flyData.txt";
     std::vector<Fly> alleFly = {};
     lesFlydata(flydataFil, alleFly);
@@ -42,6 +44,7 @@ int main(){
     for (Fly& f : alleFly){
         alleFigurer.push_back(&f);
     }
+
     alleFigurer.push_back(&Tellus);
     alleFigurer.push_back(&Solen);
 
@@ -73,14 +76,14 @@ int main(){
             Figur* fig = alleFigurer.at(i);
 
             if (dynamic_cast<Fly*>(fig)) {
-                dynamic_cast<Fly*>(fig)->flyFremmover();
+                dynamic_cast<Fly*>(fig)->flyFremmover(ms);
             }
         }
 
-        sjekkKeyPressed(cam, window);
-
         auto end = std::chrono::high_resolution_clock::now();
-        long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        sjekkKeyPressed(cam, window, ms);
 
         if (debug){
             int FPS = getFPS(ms);

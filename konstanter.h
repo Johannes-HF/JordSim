@@ -17,8 +17,8 @@ constexpr int FAR = 10000000;
 constexpr float KAMERA_1_FOV = 30.0;
 constexpr double A_RATIO[2] = {16, 9};
 const double FOCAL = (WINDOW_HEIGHT / 2) / std::tan(degToRad(KAMERA_1_FOV));
-constexpr int skrittLengde = 500;
-const double rotasjonsFart = degToRad(5);
+constexpr int skrittLengde = 3;
+const double rotasjonsFart = degToRad(0.02);
 
 //Figur
 constexpr bool gradient = false;
@@ -36,5 +36,6 @@ constexpr bool debug = true;
 const Punkt ORIGO{0, 0, 0};
 constexpr int JORD_RADIUS = 6371; //km
 constexpr int SOL_RADIUS = 696000; //km
+constexpr float JORD_ROT_HAST = 0.1;
 
 
