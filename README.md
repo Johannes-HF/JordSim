@@ -10,4 +10,6 @@ Min neste utfordring er å gjøre kuben til en kule med ønsket antall trekanter
 
 Min neste utfordring blir å tegne jorda på denne kulen. #CHECK
 
-Det neste jeg vil gjøre er å legge til styrekontroller så man kan fly rundt, og deretter legge til "live" fly med frie data.
+Det neste jeg vil gjøre er å legge til styrekontroller så man kan fly rundt, og deretter legge til "live" fly med frie data. #CHECK
+
+Det neste jeg vil gjøre er å 'ta over' fly, så jeg kan fly rundt selv.
