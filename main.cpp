@@ -83,7 +83,7 @@ int main(){
         auto end = std::chrono::high_resolution_clock::now();
         ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-        sjekkKeyPressed(cam, window, ms);
+        sjekkKeyPressed(cam, window, ms, alleFly);
 
         if (debug){
             int FPS = getFPS(ms);

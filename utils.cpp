@@ -6,6 +6,8 @@
 #include <chrono>
 #include <iostream>
 
+TDT4102::Point gammelMusPos{-1, 0};
+
 int randomInt(int low, int high){
     random_device rd;
     default_random_engine generator(rd());
@@ -74,7 +76,7 @@ void tegnKontur (AnimationWindow* window, TDT4102::Point p1, TDT4102::Point p2, 
 
 }
 
-void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt){
+void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt, std::vector<Fly>& alleFly){
 
     bool dKeyIsPressed = window.is_key_down(KeyboardKey::D);
     bool aKeyIsPressed = window.is_key_down(KeyboardKey::A);
@@ -87,6 +89,96 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt){
     bool rightKeyIsPressed = window.is_key_down(KeyboardKey::RIGHT);
     bool upKeyIsPressed = window.is_key_down(KeyboardKey::UP);
     bool downKeyIsPressed = window.is_key_down(KeyboardKey::DOWN);
+
+    bool venstreMus = window.is_left_mouse_button_down();
+
+    if (venstreMus){
+        TDT4102::Point musPos = window.get_mouse_coordinates();
+
+        if (musPos.x != gammelMusPos.x && musPos.y != gammelMusPos.y ){
+
+            float x_ndc = 2 * musPos.x / WINDOW_WIDTH - 1; 
+            float z_ndc = 1 - 2 * musPos.y / WINDOW_HEIGHT;
+        
+            Punkt stråleRetning{x_ndc * A_RATIO[0] / A_RATIO[1] * tan(KAMERA_1_FOV), - 1, z_ndc * tan(KAMERA_1_FOV)};
+
+            stråleRetning = stråleRetning / pow(stråleRetning * stråleRetning, 0.5);
+
+            Punkt camPos = cam.getPos();
+
+            Punkt strålePunkt = camPos;
+
+            Punkt frem = cam.getRetning();
+            Punkt verdenOpp = {0, 0, 1};                   
+            Punkt hoyre  = (frem ^ verdenOpp);
+            hoyre = hoyre / sqrt(hoyre * hoyre);
+
+            Punkt oppover = (hoyre ^ frem);
+            oppover = oppover / sqrt(oppover * oppover);
+
+            Punkt stråleRetningVerden{
+                    hoyre * stråleRetning.x +
+                    frem * stråleRetning.y +
+                    oppover * stråleRetning.z};
+
+            stråleRetningVerden = stråleRetningVerden / pow(stråleRetningVerden * stråleRetningVerden, 0.5f);
+
+            std::cout << "frem:     " << frem.x << " " << frem.y << " " << frem.z << std::endl;
+            std::cout << "hoyre:    " << hoyre.x << " " << hoyre.y << " " << hoyre.z << std::endl;
+            std::cout << "oppover:  " << oppover.x << " " << oppover.y << " " << oppover.z << std::endl;
+            std::cout << "stråle:   " << stråleRetningVerden.x << " " << stråleRetningVerden.y << " " << stråleRetningVerden.z << std::endl;
+            std::cout << "camPos:   " << camPos.x << " " << camPos.y << " " << camPos.z << std::endl;
+
+            // og for første trekant
+            std::cout << "punkter[0]: " << alleFly[0].getPunkter()[0].x << " " << alleFly[0].getPunkter()[0].y << " " << alleFly[0].getPunkter()[0].z << std::endl;
+            std::cout << "punkter[1]: " << alleFly[0].getPunkter()[1].x << " " << alleFly[0].getPunkter()[1].y << " " << alleFly[0].getPunkter()[1].z << std::endl;
+            std::cout << "punkter[2]: " << alleFly[0].getPunkter()[2].x << " " << alleFly[0].getPunkter()[2].y << " " << alleFly[0].getPunkter()[2].z << std::endl;
+
+            for (Fly& f : alleFly){
+                std::vector<Punkt> punkter = f.getPunkter();
+
+                // Möller–Trumbore - algoritmen for å se om en stråle treffer en trekant.
+
+                Punkt A = punkter[1] - punkter[0];
+                Punkt B = punkter[2] - punkter[0];
+                Punkt h = stråleRetningVerden ^ B;
+                float det = A * h;
+
+                float EPSILON = 0.01;
+
+                if (std::abs(det) < EPSILON){
+                    continue;
+                }
+
+                float invers_det = 1.0 / det;
+                Punkt s = camPos - punkter[0] + f.getSentrum();
+                float u = (s * h) * invers_det;
+
+                if (u < 0.0 || u > 1.0){
+                    continue;
+                }
+
+                Punkt q = s ^ A;
+                float v = (stråleRetningVerden * q) * invers_det;
+
+                if (v < 0.0 || u + v > 1.0){
+                    continue;
+                }
+
+                float t = (B * q) * invers_det;
+
+                if (t < EPSILON){
+                    continue;
+                }
+                
+                f.printFlyData();
+            }
+
+            std::cout << "{ " << musPos.x << ", " << musPos.y << " }" << std::endl;
+            gammelMusPos = musPos;
+        }
+    }
+
 
     Punkt frem = cam.getRetning();
     Punkt hoyre = frem ^ Punkt{0, 0, 1};
