@@ -9,22 +9,15 @@
 #include "widgets/Slider.h"
 #include "utils.h"
 
-
-
-template<typename F>
-
 class Scene{
     private:
-    AnimationWindow window;
+    AnimationWindow* window;
     std::vector<Figur*> figurer;
     Kamera cam;
-    
 
     public:
-
-    Scene(Kamera inCam, std::vector<Figur*>  inFigurer, AnimationWindow inWindow) : cam(inCam), figurer(inFigurer), window(inWindow){};
-
-    void lagKnapp(F kallFunk, Point Pos, int bredde, int hoyde, string tekst);
-    
+    Scene(Kamera inCam, std::vector<Figur*>& inFigurer, AnimationWindow& inWindow)
+        : cam(inCam), figurer(inFigurer), window(&inWindow) {};
 };
 
+Scene lagHovedMeny(std::vector<Figur*>& alleFigurer);

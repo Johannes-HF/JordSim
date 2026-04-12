@@ -439,3 +439,6 @@ void TDT4102::AnimationWindow::play_audio(TDT4102::Audio& audio, int loops) {
     audio.play(loops);
 }
 
+void TDT4102::AnimationWindow::deleteWidgets(){
+    widgets.resize(0);
+};

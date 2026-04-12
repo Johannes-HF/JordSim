@@ -132,6 +132,8 @@ class AnimationWindow {
 
     float get_delta_mouse_wheel() const;
 
+    void deleteWidgets();
+
     // 
     void play_audio(TDT4102::Audio& audio, int loops = 0);
 };

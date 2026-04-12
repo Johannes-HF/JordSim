@@ -1,24 +1,31 @@
 #include "ui.h"
+#include "widgets/CheckBox.h"
+#include "widgets/Slider.h"
+#include "widgets/Button.h"
 
-void startSim(){
-    //bytt scene
+void startSim(AnimationWindow* window){
+    window->deleteWidgets();
 }
 
-TDT4102::CheckBox jordCheck{{100, 100,}, 200, 50, ""};
-jordCheck.setLabel("Tegn Jorda");
+void lagHovedmenyUI(AnimationWindow& window){
 
-TDT4102::CheckBox solCheck{{100, 200,}, 200, 50, ""};
-solCheck.setLabel("Tegn Jorda");
+    TDT4102::CheckBox jordCheck{{100, 100}, 200, 50, ""};
+    jordCheck.setLabel("Tegn Jorda");
 
-TDT4102::CheckBox flyCheck{{100, 300,}, 200, 50, ""};
-flyCheck.setLabel("Tegn Fly");
+    TDT4102::CheckBox solCheck{{100, 200}, 200, 50, ""};
+    solCheck.setLabel("Tegn Sola");
 
-HM_window.add(jordCheck);
-HM_window.add(solCheck);
-HM_window.add(flyCheck);
+    TDT4102::CheckBox flyCheck{{100, 300}, 200, 50, ""};
+    flyCheck.setLabel("Tegn Fly");
 
-TDT4102::Slider kvalitet{{100,400},200, 30, 0, 50, 0, 2};  //pos, bredde, hoyde, min, maks, init-verdi, delta
+    window.add(jordCheck);
+    window.add(solCheck);
+    window.add(flyCheck);
 
-HM_window.add(kvalitet);
+    TDT4102::Slider kvalitet{{100, 400}, 200, 30, 1, 7, 0, 1};
+    window.add(kvalitet);
 
-hovedMeny.lagKnapp(startSim, {100,400}, 200, 50, "Start Simulasjon");
+    TDT4102::Button startKnapp({100, 500}, 200, 50, "Start Simulasjon");
+    startKnapp.setCallback([&window](){ startSim(&window); });
+    window.add(startKnapp);
+}

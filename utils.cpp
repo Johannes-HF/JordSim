@@ -5,6 +5,8 @@
 #include "konstanter.h"
 #include <chrono>
 #include <iostream>
+#include "scener.h"
+#include "ui.h"
 
 TDT4102::Point gammelMusPos{-1, 0};
 
