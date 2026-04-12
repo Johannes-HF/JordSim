@@ -12,4 +12,6 @@ Min neste utfordring blir å tegne jorda på denne kulen. #CHECK
 
 Det neste jeg vil gjøre er å legge til styrekontroller så man kan fly rundt, og deretter legge til "live" fly med frie data. #CHECK
 
-Det neste jeg vil gjøre er å 'ta over' fly, så jeg kan fly rundt selv.
+Det neste jeg vil gjøre er å 'ta over' fly, så jeg kan fly rundt selv. # IKKE TID
+
+Idag er fristen så jeg må kaste inn håndkledet her. Det siste jeg skal gjøre før jeg leverer er å lage litt UI, så det er mer brukervennlig.

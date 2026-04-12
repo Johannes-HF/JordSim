@@ -90,7 +90,7 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt, std::ve
     bool upKeyIsPressed = window.is_key_down(KeyboardKey::UP);
     bool downKeyIsPressed = window.is_key_down(KeyboardKey::DOWN);
 
-    bool venstreMus = window.is_left_mouse_button_down();
+    bool venstreMus = false; //window.is_left_mouse_button_down();
 
     if (venstreMus){
         TDT4102::Point musPos = window.get_mouse_coordinates();
@@ -179,25 +179,26 @@ void sjekkKeyPressed(Kamera& cam, AnimationWindow& window, long long dt, std::ve
         }
     }
 
+    if (cam.getKanEndres()){
+        Punkt frem = cam.getRetning();
+        Punkt hoyre = frem ^ Punkt{0, 0, 1};
 
-    Punkt frem = cam.getRetning();
-    Punkt hoyre = frem ^ Punkt{0, 0, 1};
+        Punkt camPos = cam.getPos();
 
-    Punkt camPos = cam.getPos();
+        if(wKeyIsPressed)       camPos = camPos + frem  * skrittLengde * dt;
+        if(sKeyIsPressed)       camPos = camPos - frem  * skrittLengde * dt;
+        if(dKeyIsPressed)       camPos = camPos + hoyre * skrittLengde * dt;
+        if(aKeyIsPressed)       camPos = camPos - hoyre * skrittLengde * dt;
+        if(spaceKeyIsPressed)   camPos.z += skrittLengde * dt;
+        if(lShiftKeyIsPressed)  camPos.z -= skrittLengde * dt;
 
-    if(wKeyIsPressed)       camPos = camPos + frem  * skrittLengde * dt;
-    if(sKeyIsPressed)       camPos = camPos - frem  * skrittLengde * dt;
-    if(dKeyIsPressed)       camPos = camPos + hoyre * skrittLengde * dt;
-    if(aKeyIsPressed)       camPos = camPos - hoyre * skrittLengde * dt;
-    if(spaceKeyIsPressed)   camPos.z += skrittLengde * dt;
-    if(lShiftKeyIsPressed)  camPos.z -= skrittLengde * dt;
+        cam.endrePos(camPos);
 
-    cam.endrePos(camPos);
-
-    if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart * dt);
-    if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart * dt);
-    if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart * dt);
-    if (downKeyIsPressed)  cam.roterPitch(-rotasjonsFart * dt);
+        if (leftKeyIsPressed)  cam.roterYaw(rotasjonsFart * dt);
+        if (rightKeyIsPressed) cam.roterYaw(-rotasjonsFart * dt);
+        if (upKeyIsPressed)    cam.roterPitch(rotasjonsFart * dt);
+        if (downKeyIsPressed)  cam.roterPitch(-rotasjonsFart * dt);
+    }
 }
 
 int getFPS(long long løkkeTidMS){

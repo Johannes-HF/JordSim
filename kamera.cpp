@@ -15,9 +15,9 @@ std::ostream& operator<<(std::ostream& os, const Kamera& cam){
 }
 
 
-Kamera::Kamera(const double kamFov, const double kamAspectRatio[2], Punkt kamPos) : 
+Kamera::Kamera(const double kamFov, const double kamAspectRatio[2], Punkt kamPos, bool inKanEndres) : 
     pos(kamPos), 
-    aspectRatio{kamAspectRatio[0], kamAspectRatio[1]}
+    aspectRatio{kamAspectRatio[0], kamAspectRatio[1]}, kanEndres(inKanEndres)
     
     {
         fov[0] = degToRad(kamFov);
@@ -35,6 +35,8 @@ void Kamera::endrePos(Punkt& p){
 const array<double, 2>& Kamera::getFov() const {return fov;}
 const array<double, 2>& Kamera::getAspect() const {return aspectRatio;};
 const Punkt& Kamera::getRetning() const {return retning;};
+const bool Kamera::getKanEndres() const {return kanEndres;};
+
 
 void Kamera::roterYaw(double theta){
     double x = retning.x;
