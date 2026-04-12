@@ -21,8 +21,7 @@ class Kamera{
         const array<double, 2>& getFov() const;
         const array<double, 2>& getAspect() const;
         const Punkt& getRetning() const;
-        const bool getKanEndres() const;
-
+        bool getKanEndres() const;
 
         friend std::ostream& operator<<(std::ostream& os, const Kamera& cam);
     

@@ -20,6 +20,10 @@ std::vector<TDT4102::Color>* lesBilde(const char* filbane, int& w, int& h){
 
     SDL_Surface* surf = IMG_Load(filbane);
 
+    if (!surf){
+        throw std::runtime_error(std::string("Kunne ikke laste bilde: ") + filbane + " — " + IMG_GetError());
+    }
+
     w = surf->w;
     h = surf->h;
 

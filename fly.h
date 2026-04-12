@@ -50,7 +50,7 @@ class Fly : public Figur{
             vertikalFart(inVertikalFart){ finnKartesisk();};
 
         void finnKartesisk(); //Setter sentrum i rommet og lager figuren
-        void flyFremmover(long long dt);
+        void flyFremmover(long long dt, int flyHast);
         void roterMedJord();
         void printFlyData() const;
         void printSentrum() const;

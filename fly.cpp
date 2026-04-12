@@ -36,11 +36,11 @@ void Fly::finnKartesisk(){
     this->farger = {TDT4102::Color::white, TDT4102::Color::white, TDT4102::Color::white};
 }
 
-void Fly::flyFremmover(long long dt){
+void Fly::flyFremmover(long long dt, int flyHast){
 
     roterMedJord();
 
-    double deltaFart = (this->fart / 1000) * dt / 100;
+    double deltaFart = (this->fart / 100) * dt / 1000 * flyHast;
     Punkt nySentrum = this->sentrum + this->retningVektor * deltaFart;
     this->sentrum = nySentrum / (pow(nySentrum * nySentrum, 0.5)) * (JORD_RADIUS + this->baroHoyde / 100 + 50);
 

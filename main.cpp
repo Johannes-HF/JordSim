@@ -1,4 +1,3 @@
-#pragma once
 #include "std_lib_facilities.h"
 #include "AnimationWindow.h"
 #include "tegnFigurer.h"
@@ -7,96 +6,139 @@
 #include "konstanter.h"
 #include "utils.h"
 #include "lesBilder.h"
-#include <cmath>
-#include <chrono>
 #include "fly.h"
+#include "ui.h"
+#include <chrono>
 
 int main(){
 
-    long long ms = 0;
+    TDT4102::AnimationWindow window(WINDOW_POSITION_X, WINDOW_POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
-    std::string flydataFil = "flydata/flyData.txt";
-    std::vector<Fly> alleFly = {};
-    lesFlydata(flydataFil, alleFly);
+    // Hovedmenyen
+    bool startFlag = false;
 
-    std::cout << "Antall flyvende fly: " << alleFly.size() << std::endl;
 
-    int jordW;
-    int jordH;
-    std::vector<TDT4102::Color>* Jordfarger = lesBilde(jordKart, jordW, jordH);
+    TDT4102::CheckBox jordCheck{{100, 100}, 200, 50, ""};
+    TDT4102::CheckBox solCheck {{100, 150}, 200, 50, ""};
+    TDT4102::CheckBox flyCheck {{100, 200}, 200, 50, ""};
+    TDT4102::Slider kvalitet {{100, 400}, 200, 30, 2, 8, 4, 1};
+    TDT4102::Button startKnapp({100, 500}, 200, 50, "Start Simulasjon");
 
-    TDT4102::AnimationWindow window(WINDOW_POSITION_X, WINDOW_POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE );
 
-    Punkt p{WINDOW_WIDTH / 2, -12000, WINDOW_HEIGHT / 2};
-    std::cout << p;
 
-    Kamera cam{KAMERA_1_FOV, A_RATIO, p};
+    TDT4102::TextBox tbox({100, 350}, 200, 30, "Oppløsning:");
 
-    std::cout << cam;
+    tbox.setTextColor(TDT4102::Color::white);
 
+    window.add(tbox);
+
+
+    lagHovedmenyUI(window, jordCheck, solCheck, flyCheck, kvalitet, startKnapp, startFlag);  
+
+    TDT4102::Image kartAvJorda("bilder/verden2k.jpg");
+
+    while (!window.should_close() && !startFlag) {
+        window.draw_image({0, 0}, kartAvJorda, WINDOW_WIDTH, WINDOW_HEIGHT);
+        window.draw_rectangle({0, 0}, 400, WINDOW_HEIGHT, TDT4102::Color{40, 40, 40}, TDT4102::Color::black);
+
+        std::string txtBoksTxt = std::format("Oppløsning: {}/8", kvalitet.getValue());
+        tbox.setText(txtBoksTxt);
+
+        window.next_frame();
+    }
+
+    bool tegnJord = jordCheck.isSelected();
+    bool tegnSol  = solCheck.isSelected();
+    bool tegnFly  = flyCheck.isSelected();
+    int  kvalitetVerdi = kvalitet.getValue();
+
+    window.deleteWidgets();
+
+    
+    std::vector<Fly> alleFly;
+    if (tegnFly){
+        try {
+            lesFlydata("flydata/flyData.txt", alleFly);
+            std::cout << "Antall flyvende fly: " << alleFly.size() << std::endl;
+        } 
+        catch (const std::exception& e) {
+            std::cerr << "Feil under innlesing av flydata: " << e.what() << std::endl;
+            return 1;
+        }
+    }
+
+    
+    Punkt camPos{WINDOW_WIDTH / 2.0, -30000, WINDOW_HEIGHT / 2.0};
+    Kamera cam{KAMERA_1_FOV, A_RATIO, camPos, true};
+
+     
     CelestialKropp Tellus{ORIGO, JORD_RADIUS};
-    CelestialKropp Solen{{150 * pow(10, 4), 0, 0}, SOL_RADIUS};
+    CelestialKropp Solen{{0, 150 * pow(10, 4), 0}, SOL_RADIUS};
 
-    himmelLegemeInit(Tellus, Solen);
-
-    std::vector<Figur*> alleFigurer{};// {&Tellus, &Solen} //&kube, &kube2,
-
-    for (Fly& f : alleFly){
-        alleFigurer.push_back(&f);
+    if (tegnJord || tegnSol){
+        try {
+            himmelLegemeInit(Tellus, Solen, kvalitetVerdi);
+        } 
+        catch (const std::exception& e) {
+            std::cerr << "Feil under init av himmellegemer: " << e.what() << std::endl;
+            return 1;
+    }   
     }
 
-    alleFigurer.push_back(&Tellus);
-    alleFigurer.push_back(&Solen);
+    std::vector<Figur*> alleFigurer;
+    if (tegnFly)
+        for (Fly& f : alleFly)
+            alleFigurer.push_back(&f);
+    if (tegnJord) alleFigurer.push_back(&Tellus);
+    if (tegnSol)  alleFigurer.push_back(&Solen);
 
+    
     std::vector<TDT4102::Point> stjerner;
+    for (int i = 0; i < 100; i++)
+        stjerner.push_back({randomInt(0, WINDOW_WIDTH), randomInt(0, WINDOW_HEIGHT)});
 
-    for (int i= 0; i < 100; i++){
-        stjerner.push_back(
-            TDT4102::Point{randomInt(0, WINDOW_WIDTH), randomInt(0, WINDOW_HEIGHT)}
-        );
-    }
+    // Program
+
+    TDT4102::CheckBox debugCheck{{10, 10}, 200, 30, "DebugMeny"};
+    debugCheck.setLabelColor(TDT4102::Color::white);
+    window.add(debugCheck);
+
+    TDT4102::Slider simulasjonHastighet {{WINDOW_WIDTH / 2 - 100, 20}, 200, 30, 1, 1000, 1, 1};
+    window.add(simulasjonHastighet);
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    while(!window.should_close()) {
+    while (!window.should_close()) {
 
         window.draw_rectangle({0, 0}, WINDOW_WIDTH, WINDOW_HEIGHT, TDT4102::Color::black);
 
-        int stjerneIndex = 0;
-        for (TDT4102::Point p : stjerner){
-            window.draw_circle(p, 2, TDT4102::Color::white);
-            stjerneIndex ++;
+        for (const TDT4102::Point& s : stjerner){
+            window.draw_circle(s, 2, TDT4102::Color::white);
         }
-
-        window.draw_circle({100, 100}, 50, TDT4102::Color::light_yellow);
 
         int antallTrekanter = tegn3DFigur(&window, cam, alleFigurer);
 
-        for (int i = 0; i < alleFigurer.size(); i++){
-            Figur* fig = alleFigurer.at(i);
+        auto end = std::chrono::high_resolution_clock::now();
+        long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        start = std::chrono::high_resolution_clock::now();
 
-            if (dynamic_cast<Fly*>(fig)) {
-                dynamic_cast<Fly*>(fig)->flyFremmover(ms);
+        int flyHast = simulasjonHastighet.getValue(); 
+
+        for (Figur* fig : alleFigurer){
+            if (auto* fly = dynamic_cast<Fly*>(fig)){
+                
+                fly->flyFremmover(ms, flyHast);
+
             }
         }
 
-        auto end = std::chrono::high_resolution_clock::now();
-        ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
         sjekkKeyPressed(cam, window, ms, alleFly);
 
-        if (debug){
-            int FPS = getFPS(ms);
-
-            debugInfo(cam, window, FPS, antallTrekanter);
+        if (debugCheck.isSelected()){
+            debugInfo(cam, window, getFPS(ms), antallTrekanter);
         }
-
-        start = std::chrono::high_resolution_clock::now();
-
         window.next_frame();
-
     }
-    
-    delete Jordfarger;
+
     return 0;
 }

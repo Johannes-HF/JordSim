@@ -229,17 +229,21 @@ void debugInfo(const Kamera& cam, AnimationWindow& window, int FPS, int antallTr
     window.draw_text({static_cast<int>(fpsString.size() * 15 + 20), WINDOW_HEIGHT - 50}, antallTrekanerString, TDT4102::Color::white, 30);
 };
 
-void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen){
+void himmelLegemeInit(CelestialKropp& Tellus, CelestialKropp& Solen, int kvalitet){
 
-    Tellus.dobleTrekanter(5);
-    Solen.dobleTrekanter(4);
-
+    Tellus.dobleTrekanter(kvalitet);
+    if (kvalitet < 4){
+        Solen.dobleTrekanter(kvalitet);
+    }
+    else{
+        Solen.dobleTrekanter(kvalitet - 1);
+    }
     Tellus.Spherifiser(JORD_RADIUS);
     Solen.Spherifiser(SOL_RADIUS);
-
+ 
     Tellus.mapBildeTilKule(jordKart);
     Solen.mapBildeTilKule(solKart);
-
+ 
     Tellus.setSpin(degToRad(JORD_ROT_HAST), {0, 0, 1});
     Solen.setSpin(degToRad(0.2), {0, 0, 1});
 };
